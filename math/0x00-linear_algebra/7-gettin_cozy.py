@@ -8,8 +8,8 @@ def cat_matrices2D(mat1, mat2, axis=0):
     """
     Concatenates two matrices along a specific axis
     """
+    cat = []
     if axis == 0 and len(mat1[0]) == len(mat2[0]):
-        cat = []
         for item in mat1:
             inner = item[:]
             cat.append(inner)
@@ -20,9 +20,8 @@ def cat_matrices2D(mat1, mat2, axis=0):
         return cat
 
     if axis == 1 and len(mat1) == len(mat2):
-        new = []
         for i in range(len(mat1)):
             nsum = mat1[i] + mat2[i]
-            new.append(nsum)
+            cat.append(nsum)
 
-        return new
+        return cat
