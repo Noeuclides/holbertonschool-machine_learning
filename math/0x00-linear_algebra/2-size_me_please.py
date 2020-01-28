@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
-
+"""module with a method that calculates shape
+"""
 
 def matrix_shape(matrix):
     """
