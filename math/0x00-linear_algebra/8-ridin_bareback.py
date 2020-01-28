@@ -1,4 +1,7 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+"""
+module to multiplicate matrices
+"""
 
 
 def mat_mul(mat1, mat2):

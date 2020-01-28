@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Module to concatenate matrices on a axis
+"""
 import numpy as np
 
 

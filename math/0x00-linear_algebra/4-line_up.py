@@ -1,4 +1,7 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+"""
+module to add arrays
+"""
 
 
 def add_arrays(arr1, arr2):

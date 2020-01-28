@@ -1,4 +1,7 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+"""
+Module to concatenate matrices on axis
+"""
 
 
 def cat_matrices2D(mat1, mat2, axis=0):
