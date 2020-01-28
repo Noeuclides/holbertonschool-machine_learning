@@ -22,7 +22,8 @@ def cat_matrices2D(mat1, mat2, axis=0):
             cat.append(elem)
         return cat
     if axis == 1 and len(cat) == len(cat2):
+        new = []
         for i in range(len(cat)):
-            for j in range(1):
-                cat[i].append(cat2[i][j])
-        return cat
+            nsum = cat[i] + cat2[i]
+            new.append(nsum)
+        return new
