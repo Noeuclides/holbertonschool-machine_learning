@@ -2,7 +2,6 @@
 """
 Module to multiplicate matrices on numpy
 """
-#import numpy as np
 
 
 def np_matmul(mat1, mat2):
