@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+
 def mat_mul(mat1, mat2):
     """
     Performs matrix multiplication
@@ -13,10 +14,10 @@ def mat_mul(mat1, mat2):
     for i in range(len(mat1)):
         for j in range(len(mat2[0])):
             for k in range(len(mat2)):
-                item += mat1[i][k] * mat2[k][j] 
+                item += mat1[i][k] * mat2[k][j]
             inArray.append(item)
             item = 0
         mulArr.append(inArray)
         inArray = []
-    
+
     return mulArr

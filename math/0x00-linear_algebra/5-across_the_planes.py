@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+
 def add_matrices2D(mat1, mat2):
     """
     Adds two matrices element-wise
@@ -17,6 +18,5 @@ def add_matrices2D(mat1, mat2):
             add.append(result)
         total.append(add)
         add = []
-    
-    return(total)
 
+    return(total)
