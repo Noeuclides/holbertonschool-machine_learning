@@ -27,6 +27,41 @@ student_grades = np.random.normal(68, 15, 50)
 
 # your code here
 plt.figure()
+plt.suptitle("All in one")
 
 plt.subplot(321)
-plt.plot
+x = np.arange(0, 11)
+plt.plot(x, y0, 'r-')
+
+plt.subplot(322)
+plt.scatter(x1, y1, color='m')
+plt.xlabel('Height (in)', fontsize="x-small")
+plt.ylabel('Weight (lbs)', fontsize="x-small")
+plt.title('Men\'s Height vs Weight', fontsize="x-small")
+
+plt.subplot(323)
+plt.plot(x2, y2)
+plt.xlim(0, 28650)
+plt.yscale("log")
+plt.ylabel("Fraction Remaining", fontsize="x-small")
+plt.xlabel("Time (years)", fontsize="x-small")
+plt.title("Exponential Decay of C-14", fontsize="x-small")
+
+plt.subplot(324)
+plt.plot(x3, y31, 'r--', x3, y32, 'g-')
+plt.xlim(0, 20000)
+plt.ylim(0, 1)
+plt.xlabel('Time (years)', fontsize="x-small")
+plt.ylabel('Fraction Remaining', fontsize="x-small")
+plt.title('Exponential Decay of Radioactive Elements', fontsize="x-small")
+plt.legend(["C-14","Ra-226"])
+
+plt.subplot(313)
+n, bins, patches = plt.hist(student_grades, 50, density=1, alpha=0.75)
+plt.xlabel('Grades', fontsize="x-small")
+plt.ylabel('Number of Students', fontsize="x-small")
+plt.title('Project A', fontsize="x-small")
+
+plt.subplots_adjust(hspace=0.7, wspace=0.3)
+plt.show()
+
