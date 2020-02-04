@@ -7,4 +7,6 @@ def summation_i_squared(n):
     """
     calculate sum
     """
-    return sum(range(1, (n + 1)))
+    if not isinstance(n, (int, float)):
+        return None
+    return int(sum(map(lambda x: x ** 2, range(1, (n + 1)))))
