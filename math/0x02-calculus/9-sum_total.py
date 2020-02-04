@@ -3,6 +3,7 @@
 module to summarize
 """
 
+
 def summation_i_squared(n):
     """
     calculate sum
