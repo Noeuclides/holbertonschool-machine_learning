@@ -19,7 +19,6 @@ def poly_integral(poly, C=0):
         if c % 1 == 0:
             integral.append(int(c))
         else:
-            integral.append(c)
-        
+            integral.append(c)        
     
     return integral

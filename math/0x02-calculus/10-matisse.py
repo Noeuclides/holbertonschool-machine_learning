@@ -9,11 +9,10 @@ def poly_derivative(poly):
     """
     if not isinstance(poly, list) or len(poly) == 0:
         return None
-
+    if len(poly) == 1:
+        return [0]
     derivate = [coef[0] * coef[1] for coef in enumerate(poly)]
 
-    if len(derivate) == 1:
-        return [0]
     if derivate[0] == 0:
         derivate.pop(0)
  
