@@ -7,11 +7,9 @@ def poly_integral(poly, C=0):
     """
     calculate the integral of a polynomial
     """
-    if not poly:
+    if not isinstance(poly, list) or not isinstance(C, int):
         return None
 
-    if len(poly) == 1:
-        return [0]
     if C % 1 == 0:
         integral = [int(C)]
     else:
