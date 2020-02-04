@@ -7,13 +7,19 @@ def poly_integral(poly, C=0):
     """
     calculate the integral of a polynomial
     """
-    if len(poly) == 0:
+    if not poly:
         return None
 
     if len(poly) == 1:
         return [0]
 
-    integral = [coef[1] / (coef[0]+1) for coef in enumerate(poly)]
-    integral.insert(0, C)
+    integral = [C]
+    for coef in enumerate(poly):
+        c = coef[1] / (coef[0] + 1)
+        if c % 1 == 0:
+            integral.append(int(c))
+        else:
+            integral.append(c)
+        
     
     return integral
