@@ -12,8 +12,10 @@ def poly_integral(poly, C=0):
 
     if len(poly) == 1:
         return [0]
-
-    integral = [C]
+    if C % 1 == 0:
+        integral = [int(C)]
+    else:
+        integral = [C]
     for coef in enumerate(poly):
         c = coef[1] / (coef[0] + 1)
         if c % 1 == 0:
