@@ -20,7 +20,7 @@ def poly_integral(poly, C=0):
         return integral
 
     for coef in enumerate(poly):
-        if not isinstance(coef[1], (int, float)):
+        if not isinstance(coef[1], int) and not isinstance(coef[1], float):
             return None
         c = coef[1] / (coef[0] + 1)
         if c % 1 == 0:
