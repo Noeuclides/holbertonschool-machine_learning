@@ -28,5 +28,4 @@ def poly_integral(poly, C=0):
         else:
             integral.append(c)
 
-
     return integral
