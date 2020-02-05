@@ -15,6 +15,10 @@ def poly_integral(poly, C=0):
         integral = [int(C)]
     else:
         integral = [C]
+
+    if len(poly) == 0:
+        return integral
+
     for coef in enumerate(poly):
         c = coef[1] / (coef[0] + 1)
         if c % 1 == 0:
