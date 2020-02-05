@@ -16,7 +16,7 @@ def poly_integral(poly, C=0):
     else:
         integral = [C]
 
-    if len(poly) == 0:
+    if len(poly) == 0 or poly == [0]:
         return integral
 
     for coef in enumerate(poly):
@@ -28,9 +28,5 @@ def poly_integral(poly, C=0):
         else:
             integral.append(c)
 
-    i = len(integral) - 1
-    while integral[i] == 0:
-        integral.pop(i)
-        i -= 1
 
     return integral
