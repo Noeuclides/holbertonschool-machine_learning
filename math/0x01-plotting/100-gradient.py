@@ -9,3 +9,10 @@ y = np.random.randn(2000) * 10
 z = np.random.rand(2000) + 40 - np.sqrt(np.square(x) + np.square(y))
 
 # your code here
+plt.scatter(x, y, c=z)
+plt.xlabel('x coordinate (m)')
+plt.ylabel('y coordinate (m)')
+cbar = plt.colorbar()
+cbar.set_label('elevation (m)')
+plt.title('Mountain Elevation')
+plt.show()
