@@ -13,10 +13,10 @@ class Poisson:
     def __init__(self, data=None, lambtha=1.):
         """initialize class
         """
-        if lambtha <= 0:
-            raise ValueError('lambtha must be a positive value')
+        self.lambtha = float(lambtha)
         if not data:
-            self.lambtha = float(lambtha)
+            if lambtha <= 0:
+                raise ValueError('lambtha must be a positive value')
         else:
             if not isinstance(data, list):
                 raise TypeError('data must be a list')
