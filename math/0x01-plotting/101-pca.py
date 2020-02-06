@@ -17,7 +17,7 @@ x = pca_data.T[0]
 y = pca_data.T[1]
 z = pca_data.T[2]
 ax = Axes3D(plt.figure())
-ax.scatter(x,y,z,c=labels,cmap='plasma')
+ax.scatter(x, y, z, c=labels, cmap='plasma')
 ax.set_xlabel('U1')
 ax.set_ylabel('U2')
 ax.set_zlabel('U3')
