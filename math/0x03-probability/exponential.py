@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-module of Poisson distribution
+module of Exponential distribution
 """
 
 
-class Poisson:
+class Exponential:
     """
-    class that represents a poisson distribution
+    class that represents a exponential distribution
     """
     e = 2.7182818285
 
