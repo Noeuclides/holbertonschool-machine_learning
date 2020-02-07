@@ -24,35 +24,22 @@ class Exponential:
                 raise ValueError('data must contain multiple values')
             self.lambtha = 1 / (float(sum(data) / len(data)))
 
-    def factorial(self, n):
-        """returns factorial of a number
+    def pdf(self, x):
+        """probability distribution function
         """
-        if not isinstance(n, int):
-            n = int(n)
-        factorial = 1
-        for i in range(n):
-            factorial *= i + 1
-        return factorial
-
-    def pmf(self, k):
-        """probability mass function
-        """
-        if k > 449:
+        if x < 0:
             return 0
 
         lam = self.lambtha
-        fack = self.factorial(k)
-        pmf = (self.e ** (-lam) * lam ** k) / fack
-        return pmf
+        pdf = (self.e ** (-lam * x)) * lam
+        return pdf
 
-    def cdf(self, k):
+    def cdf(self, x):
         """cumulative distribution function
         """
-        if k > 449:
+        if x < 0:
             return 0
         cdf = 0
         lam = self.lambtha
-        for i in range(k + 1):
-            fack = self.factorial(i)
-            cdf += (self.e ** (-lam) * lam ** i) / fack
+        cdf = 1 - (self.e ** (-lam * x))
         return cdf
