@@ -16,12 +16,12 @@ class Exponential:
         self.lambtha = float(lambtha)
         if not data:
             if lambtha <= 0:
-                raise ValueError('lambtha must be a positive value')
+                raise ValueError("lambtha must be a positive value")
         else:
             if not isinstance(data, list):
-                raise TypeError('data must be a list')
+                raise TypeError("data must be a list")
             if len(data) < 2:
-                raise ValueError('data must contain multiple values')
+                raise ValueError("data must contain multiple values")
             self.lambtha = 1 / (float(sum(data) / len(data)))
 
     def pdf(self, x):
