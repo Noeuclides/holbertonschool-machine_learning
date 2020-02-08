@@ -27,8 +27,6 @@ class Poisson:
     def factorial(self, n):
         """returns factorial of a number
         """
-        if not isinstance(n, int):
-            n = int(n)
         factorial = 1
         for i in range(n):
             factorial *= i + 1
@@ -37,21 +35,25 @@ class Poisson:
     def pmf(self, k):
         """probability mass function
         """
-        if k > 449:
+        if k <= 0:
             return 0
-
-        lam = self.lambtha
+        if not isinstance(k, int):
+            k = int(k)
+       
         fack = self.factorial(k)
         avg = self.lambtha ** k
-        exp = Poisson.e ** (self.lambtha * (-1))
+        exp = self.e ** (self.lambtha * (-1))
         pmf = (avg * exp) / fack
         return pmf
 
     def cdf(self, k):
         """cumulative distribution function
         """
-        if k > 449:
+        if k <= 0:
             return 0
+        if not isinstance(k, int):
+            k = int(k)
+
         cdf = 0
         lam = self.lambtha
         for i in range(k + 1):
