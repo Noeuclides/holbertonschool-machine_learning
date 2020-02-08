@@ -16,7 +16,7 @@ class Binomial:
         """
         self.n = int(n)
         self.p = float(p)
-        if not data:
+        if data is None:
             self.n = n
             self.p = p
             if n <= 0:

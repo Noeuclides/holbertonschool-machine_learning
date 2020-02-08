@@ -42,7 +42,9 @@ class Poisson:
 
         lam = self.lambtha
         fack = self.factorial(k)
-        pmf = (self.e ** (-lam) * lam ** k) / fack
+        avg = self.lambtha ** k
+        exp = Poisson.e ** (self.lambtha * (-1))
+        pmf = (avg * exp) / fack
         return pmf
 
     def cdf(self, k):
