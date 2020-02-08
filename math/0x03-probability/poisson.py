@@ -14,14 +14,14 @@ class Poisson:
         """initialize class
         """
         self.lambtha = float(lambtha)
-        if not data:
+        if data is None:
             if lambtha <= 0:
-                raise ValueError('lambtha must be a positive value')
+                raise ValueError("lambtha must be a positive value")
         else:
             if not isinstance(data, list):
                 raise TypeError('data must be a list')
             if len(data) < 2:
-                raise ValueError('data must contain multiple values')
+                raise ValueError("data must contain multiple values")
             self.lambtha = float(sum(data) / len(data))
 
     def factorial(self, n):

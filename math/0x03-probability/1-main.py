@@ -10,3 +10,14 @@ print('P(9):', p1.pmf(9))
 
 p2 = Poisson(lambtha=5)
 print('P(9):', p2.pmf(9))
+
+try:
+    Poisson([])
+    print('FAIL')
+except ValueError as e:
+    print(e)
+try:
+    Poisson([1])
+    print('FAIL')
+except ValueError as e:
+    print(e)
