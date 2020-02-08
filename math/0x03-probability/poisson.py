@@ -39,7 +39,7 @@ class Poisson:
             return 0
         if not isinstance(k, int):
             k = int(k)
-       
+
         fack = self.factorial(k)
         avg = self.lambtha ** k
         exp = self.e ** (self.lambtha * (-1))

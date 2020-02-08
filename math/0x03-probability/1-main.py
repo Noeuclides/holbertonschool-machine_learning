@@ -11,13 +11,20 @@ print('P(9):', p1.pmf(9))
 p2 = Poisson(lambtha=5)
 print('P(9):', p2.pmf(9))
 
-try:
-    Poisson([])
-    print('FAIL')
-except ValueError as e:
-    print(e)
-try:
-    Poisson([1])
-    print('FAIL')
-except ValueError as e:
-    print(e)
+np.random.seed(1)
+lam = np.random.uniform(0.1, 10.0)
+n = np.random.randint(100, 1000)
+data = np.random.poisson(lam, n).tolist()
+p = Poisson(data)
+print(p.pmf(-1))
+print(p.pmf(-1.5))
+
+np.random.seed(1)
+lam = np.random.uniform(0.1, 10.0)
+n = np.random.randint(100, 1000)
+data = np.random.poisson(lam, n).tolist()
+p = Poisson(data)
+k = np.random.randint(1, 11)
+print(np.around(p.pmf(k), 10))
+k = np.random.uniform(0.5, 10.0)
+print(np.around(p.pmf(k), 10))
