@@ -28,8 +28,13 @@ class Binomial:
                 raise TypeError('data must be a list')
             if len(data) < 2:
                 raise ValueError('data must contain multiple values')
-            self.n = n / 2
-            self.p = p
+            mean = (float(sum(data) / len(data)))
+            sumdif = sum([(d - mean) ** 2 for d in data])
+            var = (sumdif / len(data))
+
+            self.p = 1 - (var / mean)
+            self.n = int(round(mean / self.p))
+            self.p = mean / self.n
 
     def pmf(self, k):
         """probability mass function
@@ -37,7 +42,7 @@ class Binomial:
         if not isinstance(k, int):
             k = int(k)
 
-        if k > 499:
+        if k < 0:
             return 0
 
         nfac = self.factorial(self.n)
@@ -52,7 +57,7 @@ class Binomial:
         """
         if not isinstance(k, int):
             k = int(k)
-        if k > 499:
+        if k < 0:
             return 0
         cdf = 0
         for i in range(k + 1):
