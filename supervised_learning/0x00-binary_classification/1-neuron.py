@@ -18,20 +18,20 @@ class Neuron:
         self.__b = 0
         self.__A = 0
 
-        @property
-        def W(self):
-            """setter method of the weights
-            """
-            return self.__W
+    @property
+    def W(self):
+        """setter method of the weights
+        """
+        return self.__W
 
-        @property
-        def b(self):
-            """setter method of the bias
-            """
-            return self.__b
+    @property
+    def b(self):
+        """setter method of the bias
+        """
+        return self.__b
 
-        @property
-        def A(self):
-            """setter method of the activated output
-            """
-            return self.__A
+    @property
+    def A(self):
+        """setter method of the activated output
+        """
+        return self.__A
