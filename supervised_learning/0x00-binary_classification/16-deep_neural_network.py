@@ -31,5 +31,5 @@ class DeepNeuralNetwork:
             bias = 'b{}'.format(l + 1)
             self.weights[key] = np.random.randn(
                 layers[l], l_prev) * np.sqrt(2 / l_prev)
-            self.weights[bias] = np.zeros(layers[l])
+            self.weights[bias] = np.zeros((layers[l], 1))
             l_prev = layers[l]
