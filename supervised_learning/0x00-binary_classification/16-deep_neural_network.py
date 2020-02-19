@@ -10,6 +10,7 @@ class DeepNeuralNetwork:
     class that defines a deep neural network
     performing binary classification
     """
+
     def __init__(self, nx, layers):
         """class constructor
         """
@@ -23,5 +24,12 @@ class DeepNeuralNetwork:
             raise TypeError('layers must be a list of positive integers')
         self.L = len(layers)
         self.cache = {}
-        self.weights = {} 
-
+        self.weights = {}
+        l_prev = nx
+        for l in range(len(layers)):
+            key = 'W{}'.format(l + 1)
+            bias = 'b{}'.format(l + 1)
+            self.weights[key] = np.random.randn(
+                layers[l], l_prev) * np.sqrt(2 / l_prev)
+            self.weights[bias] = np.zeros(layers[l])
+            l_prev = layers[l]
