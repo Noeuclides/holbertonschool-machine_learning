@@ -63,9 +63,9 @@ class Neuron:
         """Calculate one pass of gradient descent on the neuron
         """
         dw = np.matmul(X, (A - Y).T) / X.shape[1]
-        self.__W = self.__W - alpha * dw
+        self.__W = self.__W - alpha * dw.T
         db = np.sum(A - Y) / X.shape[1]
-        self.__b = self.__b - alpha * db
+        self.__b = self.__b - alpha * db.T
         return self.__W, self.__b
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
@@ -79,10 +79,10 @@ class Neuron:
             raise TypeError('alpha must be a float')
         if alpha < 0:
             raise ValueError('alpha must be positive')
-        
+
         for i in range(iterations):
             self.__A = self.forward_prop(X)
             cost = self.cost(Y, self.__A)
             self.__W, self.__b = self.gradient_descent(X, Y, self.__A, alpha)
-
+            print("Weight: ", self.__W)
         return self.__A, cost
