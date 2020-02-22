@@ -8,8 +8,6 @@ import numpy as np
 def one_hot_encode(Y, classes):
     """convert a numeric label vector into a one-hot matrix
     """
-    if not isinstance(classes, int):
-        return None
     if Y.size == 0:
         return None
     if classes != Y.max() + 1:
