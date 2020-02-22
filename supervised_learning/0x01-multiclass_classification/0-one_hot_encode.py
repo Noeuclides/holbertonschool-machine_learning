@@ -12,6 +12,8 @@ def one_hot_encode(Y, classes):
         return None
     if Y.size == 0:
         return None
+    if Y.min() < 0:
+        return None
     if classes < Y.max() + 1:
         return None
     encode = np.zeros((classes, Y.shape[0]))
