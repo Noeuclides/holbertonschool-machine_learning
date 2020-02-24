@@ -10,6 +10,8 @@ def one_hot_decode(one_hot):
     """
     if one_hot.size == 0:
         return None
+    if len(one_hot.shape) != 2:
+        return None
     if not isinstance(one_hot, np.ndarray):
         return None
     for e in one_hot:
