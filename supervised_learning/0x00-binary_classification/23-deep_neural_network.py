@@ -130,7 +130,7 @@ class DeepNeuralNetwork:
             raise TypeError('alpha must be a float')
         if alpha < 0:
             raise ValueError('alpha must be positive')
-        if verbose and graph:
+        if verbose or graph:
             if not isinstance(step, int):
                 raise TypeError('step must be an integer')
             if step <= 0 and step > iterations:
