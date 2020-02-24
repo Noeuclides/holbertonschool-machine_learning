@@ -142,7 +142,8 @@ class NeuralNetwork:
             if i % step == 0 or i == iterations:
                 costs.append(cost)
                 iteration.append(i)
-                print("Cost after {} iterations: {}".format(i, cost))
+                if verbose:
+                    print("Cost after {} iterations: {}".format(i, cost))
             self.gradient_descent(X, Y, self.__A1, self.__A2, alpha)
 
         if graph:

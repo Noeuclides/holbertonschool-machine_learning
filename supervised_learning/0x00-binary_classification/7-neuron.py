@@ -104,7 +104,8 @@ class Neuron:
             if i % step == 0 or i == iterations:
                 costs.append(cost)
                 iteration.append(i)
-                print("Cost after {} iterations: {}".format(i, cost))
+                if verbose:
+                    print("Cost after {} iterations: {}".format(i, cost))
             self.__W, self.__b = self.gradient_descent(X, Y, self.__A, alpha)
 
         if graph:
