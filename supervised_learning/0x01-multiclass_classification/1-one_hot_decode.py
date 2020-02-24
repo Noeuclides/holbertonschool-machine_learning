@@ -14,16 +14,10 @@ def one_hot_decode(one_hot):
         return None
     if not isinstance(one_hot, np.ndarray):
         return None
-    for e in one_hot:
-        if not isinstance(e, np.ndarray):
-            return None
-        if e.size == 0:
-            return None
     if one_hot.max() != 1 or one_hot.min() != 0:
         return None
 
     decode = np.zeros((one_hot.shape[1]), dtype=int)
-    p = np.where(one_hot == 1)
     for i in range(len(one_hot)):
         p = np.where(one_hot[i] == 1)
         decode[p] = i
