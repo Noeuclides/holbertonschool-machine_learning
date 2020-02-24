@@ -8,11 +8,11 @@ import numpy as np
 def one_hot_decode(one_hot):
     """convert a one-hot matrix into a vector of labels
     """
+    if not isinstance(one_hot, np.ndarray):
+        return None
     if one_hot.size == 0:
         return None
     if len(one_hot.shape) != 2:
-        return None
-    if not isinstance(one_hot, np.ndarray):
         return None
     if one_hot.max() != 1 or one_hot.min() != 0:
         return None
