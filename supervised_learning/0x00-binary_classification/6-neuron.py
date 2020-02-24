@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """module that defines a single neuron
 """
+
 import numpy as np
 
 
@@ -82,7 +83,5 @@ class Neuron:
 
         for i in range(iterations):
             self.__A = self.forward_prop(X)
-            cost = self.cost(Y, self.__A)
             self.__W, self.__b = self.gradient_descent(X, Y, self.__A, alpha)
-            print("Weight: ", self.__W)
-        return self.__A, cost
+        return self.evaluate(X, Y)
