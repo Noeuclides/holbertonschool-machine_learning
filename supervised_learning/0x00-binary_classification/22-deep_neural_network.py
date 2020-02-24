@@ -89,13 +89,40 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculate one pass of gradient descent on the neural network
         """
-        for l in range(self.__L):
-            key = 'A{}'.format(l + 1)
+        W_copy = self.weights.copy()
+        for layer in range(self.__L, 0, -1):
+            key = 'A{}'.format(layer)
+            input = 'A{}'.format(layer - 1)
+            w = 'W{}'.format(layer)
             out = 'A{}'.format(self.__L)
-            bias = 'b{}'.format(l + 1)
-            dw = np.matmul(cache[key], (cache[out] - Y).T) / Y.shape[1]
-            db = np.sum(cache[out] - Y) / Y.shape[1]
-            self.__W[key] = self.__W[key] - alpha * dw.T
-            self.__b[bias] = self.__b[bias] - alpha * db.T
-        
-        return self.__W, self.__b
+            bias = 'b{}'.format(layer)
+            if layer == self.__L:
+                dz = cache[out] - Y
+                dw = np.matmul(dz, cache[input].T) / Y.shape[1]
+            else:
+                w1 = 'W{}'.format(layer + 1)
+                back = np.matmul(W_copy[w1].T, dz)
+                derivative = cache[key] * (1 - cache[key])
+                dz = back * derivative
+                dw = np.matmul(dz, cache[input].T) / Y.shape[1]
+            db = np.sum(dz, axis=1, keepdims=True) / Y.shape[1]
+            self.__weights[w] = W_copy[w] - alpha * dw
+            self.__weights[bias] = W_copy[bias] - alpha * db
+        return self.__weights
+
+    def train(self, X, Y, iterations=5000, alpha=0.05):
+        """Train the deep neural network
+        """
+        if not isinstance(iterations, int):
+            raise TypeError('iterations must be an integer')
+        if iterations < 1:
+            raise ValueError('iterations must be a positive integer')
+        if not isinstance(alpha, float):
+            raise TypeError('alpha must be a float')
+        if alpha < 0:
+            raise ValueError('alpha must be positive')
+        for i in range(iterations):
+            _, self.__cache = self.forward_prop(X)
+            self.__weights = self.gradient_descent(Y, self.__cache, alpha)
+
+        return self.evaluate(X, Y)

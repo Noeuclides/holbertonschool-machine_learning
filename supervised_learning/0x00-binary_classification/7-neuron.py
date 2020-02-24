@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """module that defines a single neuron
 """
+
+import matplotlib.pyplot as plt
 import numpy as np
 
 
 class Neuron:
     """define a single neuron performing binary classification
     """
+
     def __init__(self, nx):
         """class constructor
         """
@@ -68,7 +71,15 @@ class Neuron:
         self.__b = self.__b - alpha * db.T
         return self.__W, self.__b
 
-    def train(self, X, Y, iterations=5000, alpha=0.05):
+    def train(
+            self,
+            X,
+            Y,
+            iterations=5000,
+            alpha=0.05,
+            verbose=True,
+            graph=True,
+            step=100):
         """Train the neuron
         """
         if not isinstance(iterations, int):
@@ -79,10 +90,29 @@ class Neuron:
             raise TypeError('alpha must be a float')
         if alpha < 0:
             raise ValueError('alpha must be positive')
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError('step must be an integer')
+            if step <= 0 or step > iterations:
+                raise ValueError('step must be positive and <= iterations')
 
-        for i in range(iterations):
+        costs = []
+        iteration = []
+        for i in range(iterations + 1):
             self.__A = self.forward_prop(X)
             cost = self.cost(Y, self.__A)
+            if i % step == 0 or i == iterations:
+                costs.append(cost)
+                iteration.append(i)
+                if verbose:
+                    print("Cost after {} iterations: {}".format(i, cost))
             self.__W, self.__b = self.gradient_descent(X, Y, self.__A, alpha)
-            print("Weight: ", self.__W)
-        return self.__A, cost
+
+        if graph:
+            plt.plot(iteration, costs, 'b-')
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
+            plt.title('Training Cost')
+            plt.show()
+
+        return self.evaluate(X, Y)
