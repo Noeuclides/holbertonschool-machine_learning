@@ -16,7 +16,6 @@ def one_hot_decode(one_hot):
         return None
     if one_hot.max() != 1 or one_hot.min() != 0:
         return None
-
     decode = np.zeros((one_hot.shape[1]), dtype=int)
     for i in range(len(one_hot)):
         p = np.where(one_hot[i] == 1)
