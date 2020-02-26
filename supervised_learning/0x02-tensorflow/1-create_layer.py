@@ -16,4 +16,4 @@ def create_layer(prev, n, activation):
                             name='layer',
                             kernel_initializer=weights_init)
 
-    return layer
+    return layer(prev)
