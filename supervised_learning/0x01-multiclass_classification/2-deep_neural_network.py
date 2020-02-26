@@ -125,7 +125,7 @@ class DeepNeuralNetwork:
         """
         if not isinstance(iterations, int):
             raise TypeError('iterations must be an integer')
-        if iterations < 1:
+        if iterations < 0:
             raise ValueError('iterations must be a positive integer')
         if not isinstance(alpha, float):
             raise TypeError('alpha must be a float')
@@ -140,9 +140,9 @@ class DeepNeuralNetwork:
         costs = []
         iteration = []
         for i in range(iterations + 1):
-            _, self.__cache = self.forward_prop(X)
+            A, self.__cache = self.forward_prop(X)
             key = "A{}".format(self.__L)
-            cost = self.cost(Y, self.__cache[key])
+            cost = self.cost(Y, A)
             if i % step == 0 or i == iterations:
                 costs.append(cost)
                 iteration.append(i)
