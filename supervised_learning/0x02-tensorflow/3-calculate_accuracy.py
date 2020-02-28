@@ -8,7 +8,7 @@ import tensorflow as tf
 def calculate_accuracy(y, y_pred):
     """calculate the accuracy of a prediction
     """
-    compare = tf.equal(y_pred, y)
+    compare = tf.equal(tf.argmax(y_pred), tf.argmax(y))
     cast = tf.cast(compare, tf.float32)
     accuracy = tf.reduce_mean(cast)
 
