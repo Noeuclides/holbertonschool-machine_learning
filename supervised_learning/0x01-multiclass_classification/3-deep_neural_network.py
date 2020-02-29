@@ -88,9 +88,9 @@ class DeepNeuralNetwork:
         """Evaluate the neural network’s predictions
         """
         A, _ = self.forward_prop(X)
-        max = np.argmax(A)
-        cost = self.cost(Y, A)
-        return np.where(max == 1, 1, 0), cost
+        max = np.amax(A, axis=0, keepdims=True)
+        key = 'A{}'.format(self.__L)
+        return np.where(self.__cache[key] == max, 1, 0), self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculate one pass of gradient descent on the neural network
@@ -116,15 +116,8 @@ class DeepNeuralNetwork:
             self.__weights[bias] = W_copy[bias] - alpha * db
         return self.__weights
 
-    def train(
-            self,
-            X,
-            Y,
-            iterations=5000,
-            alpha=0.05,
-            verbose=True,
-            graph=True,
-            step=100):
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
+              graph=True, step=100):
         """Train the deep neural network
         """
         if not isinstance(iterations, int):
