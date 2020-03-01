@@ -13,7 +13,7 @@ class DeepNeuralNetwork:
     performing binary classification
     """
 
-    def __init__(self, nx, layers):
+    def __init__(self, nx, layers, activation='sig'):
         """class constructor
         """
         if not isinstance(nx, int):
@@ -24,6 +24,10 @@ class DeepNeuralNetwork:
             raise TypeError('layers must be a list of positive integers')
         if len(layers) == 0:
             raise TypeError('layers must be a list of positive integers')
+        if activation != 'sig' or activation != 'tanh':
+            raise ValueError("activation must be 'sig' or 'tanh'")
+
+        self.__activation = activation
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
@@ -56,37 +60,47 @@ class DeepNeuralNetwork:
         """
         return self.__weights
 
+    @property
+    def activation(self):
+        """type of activation function used in the hidden layers
+        """
+        return self.__activation
+
     def forward_prop(self, X):
         """Calculate the forward propagation of the neural network
         """
         self.__cache['A0'] = X
-        for l in range(self.__L):
-            key = 'W{}'.format(l + 1)
-            bias = 'b{}'.format(l + 1)
+        for layer in range(self.__L):
+            key = 'W{}'.format(layer + 1)
+            bias = 'b{}'.format(layer + 1)
             w = self.__weights[key]
-            key_cache = 'A{}'.format(l)
+            key_cache = 'A{}'.format(layer)
             cache = self.__cache[key_cache]
             z = np.matmul(w, cache) + self.__weights[bias]
-            A = 'A{}'.format(l + 1)
-            self.__cache[A] = 1 / (1 + np.exp(-z))
+            A = 'A{}'.format(layer + 1)
+            if layer == self.__L - 1:
+                den = np.sum(np.exp(z), axis=0, keepdims=True)
+                self.__cache[A] = np.exp(z) / den
+            else:
+                self.__cache[A] = self.activationFunction(z)
         out = 'A{}'.format(self.__L)
         return self.__cache[out], self.__cache
 
     def cost(self, Y, A):
         """Calculate the cost of the model using logistic regression
         """
-        loss1 = np.matmul(Y, np.log(A).T)
-        loss2 = np.matmul(1 - Y, np.log(1.0000001 - A.T))
+        loss1 = Y * np.log(A)
         m = Y.shape[1]
-        cost = np.sum(-(loss1 + loss2)) / m
+        cost = -1 * np.sum(loss1) / m
         return cost
 
     def evaluate(self, X, Y):
         """Evaluate the neural network’s predictions
         """
         A, _ = self.forward_prop(X)
-        cost = self.cost(Y, A)
-        return np.where(A >= 0.5, 1, 0), cost
+        max = np.amax(A, axis=0, keepdims=True)
+        key = 'A{}'.format(self.__L)
+        return np.where(self.__cache[key] == max, 1, 0), self.cost(Y, A)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculate one pass of gradient descent on the neural network
@@ -104,7 +118,7 @@ class DeepNeuralNetwork:
             else:
                 w1 = 'W{}'.format(layer + 1)
                 back = np.matmul(W_copy[w1].T, dz)
-                derivative = cache[key] * (1 - cache[key])
+                derivative = self.derivative(cache[key])
                 dz = back * derivative
                 dw = np.matmul(dz, cache[input].T) / Y.shape[1]
             db = np.sum(dz, axis=1, keepdims=True) / Y.shape[1]
@@ -112,40 +126,52 @@ class DeepNeuralNetwork:
             self.__weights[bias] = W_copy[bias] - alpha * db
         return self.__weights
 
-    def train(
-            self,
-            X,
-            Y,
-            iterations=5000,
-            alpha=0.05,
-            verbose=True,
-            graph=True,
-            step=100):
+    def activationFunction(self, z):
+        """activation function sigmoid or tanh
+        """
+        if self.__activation == 'sig':
+            activation = 1 / (1 + np.exp(-z))
+        else:
+            tanhnum = np.exp(z) - np.exp(-z)
+            tanhden = np.exp(z) + np.exp(-z)
+            activation = tanhnum / tanhden
+        return activation
+
+    def derivative(self, cache):
+        """derivate of the activation function
+        """
+        if self.__activation == 'sig':
+            derivative = cache * (1 - cache)
+        else:
+            derivative = 1 - cache ** 2
+        return derivative
+
+    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
+              graph=True, step=100):
         """Train the deep neural network
         """
         if not isinstance(iterations, int):
             raise TypeError('iterations must be an integer')
-        if iterations < 1:
+        if iterations < 0:
             raise ValueError('iterations must be a positive integer')
         if not isinstance(alpha, float):
             raise TypeError('alpha must be a float')
         if alpha < 0:
             raise ValueError('alpha must be positive')
-        if verbose and graph:
+        if verbose or graph:
             if not isinstance(step, int):
                 raise TypeError('step must be an integer')
-            if step <= 0 and step > iterations:
+            if step <= 0 or step > iterations:
                 raise ValueError('step must be positive and <= iterations')
 
         costs = []
-        iteration = []
-        for i in range(iterations + 1):
-            _, self.__cache = self.forward_prop(X)
+        iteration = np.arange(0, iterations)
+        for i in range(iterations):
+            A, self.__cache = self.forward_prop(X)
             key = "A{}".format(self.__L)
-            cost = self.cost(Y, self.__cache[key])
+            cost = self.cost(Y, A)
+            costs.append(cost)
             if i % step == 0 or i == iterations:
-                costs.append(cost)
-                iteration.append(i)
                 if verbose:
                     print("Cost after {} iterations: {}".format(i, cost))
             self.gradient_descent(Y, self.__cache, alpha)
@@ -170,8 +196,9 @@ class DeepNeuralNetwork:
     def load(filename):
         """Load a pickled DeepNeuralNetwork object
         """
-        if not filename:
+        try:
+            with open(filename, 'rb') as f:
+                data = pickle.load(f)
+            return data
+        except FileNotFoundError:
             return None
-        with open(filename, 'rb') as f:
-            data = pickle.load(f)
-        return data
