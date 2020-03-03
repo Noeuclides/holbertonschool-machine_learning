@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Sheffle data
+"""Shuffle data
 """
 
-import tensorflow as tf
 import numpy as np
 
 

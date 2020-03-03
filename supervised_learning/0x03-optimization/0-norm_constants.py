@@ -2,7 +2,6 @@
 """module to normalize constants
 """
 
-import tensorflow as tf
 import numpy as np
 
 

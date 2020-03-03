@@ -2,7 +2,6 @@
 """module to normalize
 """
 
-import tensorflow as tf
 import numpy as np
 
 
