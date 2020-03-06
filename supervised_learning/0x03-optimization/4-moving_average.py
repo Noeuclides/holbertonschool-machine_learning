@@ -2,7 +2,6 @@
 """module to moving average
 """
 
-import tensorflow as tf
 import numpy as np
 
 
