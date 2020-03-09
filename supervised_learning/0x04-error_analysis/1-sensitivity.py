@@ -9,10 +9,7 @@ def sensitivity(confusion):
     """calculates the sensitivity for each class in a confusion matrix
     """
 
-    sensitivity = []
-    for i in range(confusion.shape[0]):
-        true_pos = confusion[i][i]
-        false_neg = sum(confusion[i]) - true_pos
+    true_pos = np.diagonal(confusion)
+    sensitivity = true_pos / np.sum(confusion, axis=1)
 
-        sensitivity.append(true_pos / (true_pos + false_neg))
     return sensitivity
