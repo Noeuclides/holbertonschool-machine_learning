@@ -31,5 +31,5 @@ def train_model(
         batch_size=batch_size,
         epochs=epochs,
         verbose=verbose,
-        validation_data=None,
+        validation_data=validation_data,
         shuffle=shuffle)
