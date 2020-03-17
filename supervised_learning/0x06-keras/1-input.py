@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""Input module
 """
 
 import tensorflow.keras as K
