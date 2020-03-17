@@ -8,6 +8,6 @@ import tensorflow.keras as K
 def one_hot(labels, classes=None):
     """converts a label vector into a one-hot matrix:
     """
-    encode = K.utils.to_categorical(labels)
+    encode = K.utils.to_categorical(labels, classes)
 
     return encode
