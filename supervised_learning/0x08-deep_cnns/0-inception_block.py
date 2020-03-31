@@ -3,7 +3,7 @@
 Inception Block based on paper:
 Going Deeper with Convolutions(2014)
 """
-import numpy as np
+import tensorflow.keras as K
 
 
 def inception_block(A_prev, filters):
