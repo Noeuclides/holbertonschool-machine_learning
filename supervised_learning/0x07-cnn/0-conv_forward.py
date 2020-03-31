@@ -45,7 +45,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                 convole = A_prev[prev_m, h * sh:kh +
                                  (h * sh), w * sw:kw + (w * sw)] *
                 W[:, :, :, c]
-                pos = np.sum(convole, axis=(1, 2, 3))
-                convolution[prev_m, h, w, c] = pos
-                output = activation(convolution + b[0, 0, 0, c])
-    return output
+                summatory = np.sum(convole, axis=(1, 2, 3))
+                convolution[prev_m, h, w, c] = activation(
+                    summatory + b[0, 0, 0, c])
+    return convolution
