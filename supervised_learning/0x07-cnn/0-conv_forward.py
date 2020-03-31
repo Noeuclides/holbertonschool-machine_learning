@@ -21,8 +21,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     sh, sw = stride
     pad_height, pad_width = 0, 0
     if padding == 'same':
-        pad_height = int((sh * h_prev) - sh + kh - h_prev)
-        pad_width = int((sw * w_prev) - sw + kw - w_prev)
+        pad_height = int(((sh * h_prev) - sh + kh - h_prev) / 2)
+        pad_width = int(((sw * w_prev) - sw + kw - w_prev) / 2)
 
     A_prev = np.pad(
         array=A_prev,
