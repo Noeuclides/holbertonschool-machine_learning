@@ -56,7 +56,7 @@ def inception_network():
                                           padding='valid')(inception_5b)
 
     dropout = K.layers.Dropout(0.4)(avg_pool1)
-    dense = K.layers.Dense(1000, activation='relu',
+    dense = K.layers.Dense(1000, activation='softmax',
                            kernel_initializer=initializer)(dropout)
 
     model = K.models.Model(inputs=input_1, outputs=dense)
