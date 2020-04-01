@@ -56,7 +56,7 @@ def resnet50():
     avg_pool = K.layers.AveragePooling2D(pool_size=(7, 7), strides=1,
                                          padding='same')(identity)
 
-    dense = K.layers.Dense(1000, activation='softmax',
+    dense = K.layers.Dense(1000, activation='relu',
                            kernel_initializer=initializer)(avg_pool)
 
     model = K.models.Model(inputs=X, outputs=dense)
