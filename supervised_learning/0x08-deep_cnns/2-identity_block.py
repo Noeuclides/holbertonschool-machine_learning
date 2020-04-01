@@ -27,19 +27,19 @@ def identity_block(A_prev, filters):
     initializer = K.initializers.he_normal(seed=None)
 
     conv_F11 = K.layers.Conv2D(F11, kernel_size=(1, 1),
-                               padding='same', activation='relu',
+                               padding='same',
                                kernel_initializer=initializer)(A_prev)
     batch_1 = K.layers.BatchNormalization()(conv_F11)
     activation_1 = K.layers.Activation('relu')(batch_1)
 
     conv_F3 = K.layers.Conv2D(F3, kernel_size=(3, 3),
-                              padding='same', activation='relu',
+                              padding='same',
                               kernel_initializer=initializer)(activation_1)
     batch_2 = K.layers.BatchNormalization()(conv_F3)
     activation_2 = K.layers.Activation('relu')(batch_2)
 
     conv_F12 = K.layers.Conv2D(F12, kernel_size=(1, 1),
-                               padding='same', activation='relu',
+                               padding='same',
                                kernel_initializer=initializer)(activation_2)
     batch_3 = K.layers.BatchNormalization()(conv_F12)
 
