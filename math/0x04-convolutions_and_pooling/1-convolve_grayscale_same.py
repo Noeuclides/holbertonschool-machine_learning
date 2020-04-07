@@ -5,35 +5,37 @@
 import numpy as np
 
 
-def zero_pad(array, pad1, pad2):
-    """
-    padding an array with zeros
-    """
-    array_pad = np.pad(array, ((0, 0), (pad1, pad1), (pad2, pad2)),
-                       'constant', constant_values=(0, 0))
-
-    return array_pad
-
-
 def convolve_grayscale_same(images, kernel):
     """
     performs a valid convolution on grayscale images:
     - images: numpy.ndarray, shape (m, h, w), with multiple grayscale images
     - kernel: numpy.ndarray, shape (kh, kw), with the kernel for the conv.
     """
-    step_h = kernel.shape[0]
-    step_w = kernel.shape[1]
-    images_pad = zero_pad(images, int(step_h / 2), int(step_w / 2))
-    window_h = images_pad.shape[1] - kernel.shape[0] + 1
-    window_w = images_pad.shape[2] - kernel.shape[1] + 1
-    m = images.shape[0]
-    img = np.arange(m)
+    m, h, w = images.shape
+    kh, kw = kernel.shape
 
-    convolution = np.zeros((m, window_h, window_w))
-    for i in range(window_h):
-        for j in range(window_w):
-            convole = images_pad[img, i:i + step_h, j:j + step_w] * kernel
-            pos = np.sum(convole, axis=(1, 2))
-            convolution[img, i, j] = pos
+    ph = int(kh / 2)
+    pw = int(kw / 2)
 
-    return convolution
+    if kh % 2 != 0:
+        out_h = (h - kh + 2 * ph + 1)
+    else:
+        out_h = (h - kh + 2 * ph)
+
+    if kw % 2 != 0:
+        out_w = (w - kw + 2 * pw + 1)
+    else:
+        out_w = (w - kw + 2 * pw)
+
+    output = np.zeros((m, out_h, out_w))
+    out_m = np.arange(m)
+
+    pad_img = np.pad(images, [(0,), (ph,), (pw,)],
+                     mode='constant', constant_values=0)
+
+    for i in range(out_h):
+        for j in range(out_w):
+            output[out_m, i, j] =
+            (pad_img[out_m, i:i + kh, j:j + kw] * kernel).sum()
+
+    return output
