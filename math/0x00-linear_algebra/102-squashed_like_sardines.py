@@ -4,21 +4,46 @@ Module to concatenate matrices
 """
 
 
+def cat(mat1, mat2, axis, a=1, new=[]):
+    for index, elem in enumerate(mat1):
+        if axis == a:
+            m = elem + mat2[index]
+            new.append(m)
+        else:
+            a += 1
+            m = cat(elem, mat2[index], axis, a, new)
+            new.append(m)
+
+    return new
+
+
+def matrix_shape(matrix):
+    """
+    Calculates the shape of a matrix
+    """
+    m = matrix[:]
+    shape = []
+    while isinstance(m, list):
+        shape.append(len(m))
+        m = m[0]
+
+    return(shape)
+
+
 def cat_matrices(mat1, mat2, axis=0):
     """
     Concatenate two matrices
     """
-    if len(mat1) != len(mat2):
+
+    shape1 = matrix_shape(mat1)
+    shape2 = matrix_shape(mat2)
+
+    if len(shape1) != len(shape2):
         return None
 
-    addMatrix = []
-    for i in range(len(mat1)):
-        if isinstance(mat1[i], list):
-            resultAxis = add_matrices(mat1[i], mat2[i])
-            if resultAxis is None:
-                return None
-            addMatrix.append(resultAxis)
-        else:
-            addMatrix.append(mat1[i] + mat2[i])
+    if axis == 0:
+        return mat1 + mat2
 
-    return addMatrix
+    new_m = cat(mat1, mat2, axis, a=1, new=[])
+
+    return new_m

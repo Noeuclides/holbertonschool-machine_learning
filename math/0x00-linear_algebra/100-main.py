@@ -1,4 +1,4 @@
-i#!/usr/bin/env python3
+#!/usr/bin/env python3
 
 import numpy as np
 np_slice = __import__('100-slice_like_a_ninja').np_slice
