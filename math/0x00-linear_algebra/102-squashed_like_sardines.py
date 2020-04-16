@@ -45,6 +45,9 @@ def cat_matrices(mat1, mat2, axis=0):
     if len(shape1) != len(shape2):
         return None
 
+    if len(shape1) < axis:
+        return None
+
     if axis == 0:
         return mat1 + mat2
 
