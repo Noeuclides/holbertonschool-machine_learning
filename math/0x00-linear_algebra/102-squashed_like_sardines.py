@@ -4,15 +4,19 @@ Module to concatenate matrices
 """
 
 
-def cat(mat1, mat2, axis, a=1, new=[]):
+def concat_recursive(mat1, mat2, axis, inner):
+    """
+    concatenates arrays recursevely
+    """
+    new = []
     for index, elem in enumerate(mat1):
-        if axis == a:
+        if axis == inner:
             m = elem + mat2[index]
             new.append(m)
         else:
-            a += 1
-            m = cat(elem, mat2[index], axis, a, new)
-            new.append(m)
+            inner += 1
+            new.append(concat_recursive(elem, mat2[index], axis, inner))
+            inner -= 1
 
     return new
 
@@ -44,6 +48,5 @@ def cat_matrices(mat1, mat2, axis=0):
     if axis == 0:
         return mat1 + mat2
 
-    new_m = cat(mat1, mat2, axis, a=1, new=[])
-
-    return new_m
+    concat_mat = concat_recursive(mat1, mat2, axis, inner=1)
+    return concat_mat
