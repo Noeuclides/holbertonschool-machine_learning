@@ -42,7 +42,10 @@ def cat_matrices(mat1, mat2, axis=0):
     shape1 = matrix_shape(mat1)
     shape2 = matrix_shape(mat2)
 
-    if len(shape1) != len(shape2):
+    shape1.pop(axis)
+    shape2.pop(axis)
+
+    if shape1 != shape2:
         return None
 
     if len(shape1) < axis:
