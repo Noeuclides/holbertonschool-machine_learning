@@ -11,7 +11,9 @@ class NeuralNetwork:
     layer performing binary classification
     """
     def __init__(self, nx, nodes):
-        """class constructor
+        """
+        - nx: number of input features.
+        - nodes: number of nodes found in the hidden layer.
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -66,7 +68,15 @@ class NeuralNetwork:
         return self.__A2
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neural network
+        """
+        Calculates the forward propagation of the neural network.
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        Updates the private attributes __A1 and __A2
+        The neurons use a sigmoid activation function:
+        sig(z) = 1 / (1 + exp(-z))
+        Returns the private attributes __A1 and __A2
         """
         z1 = np.matmul(self.__W1, X) + self.__b1
         self.__A1 = 1 / (1 + np.exp(-z1))
@@ -75,16 +85,33 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """Calculate the cost of the model using logistic regression
+        """
+        Calculates the cost of the model using logistic regression
+        - Y: numpy.ndarray with shape (1, m) that contains the correct labels
+        for the input data
+        - A: numpy.ndarray with shape (1, m) containing the activated output
+        of the neuron for each example
+        Returns the cost
         """
         loss1 = -np.matmul(Y, np.log(A).T)
+        # 1.0000001 - A instead of 1 - A to avoid division by zero errors
         loss2 = np.matmul((1 - Y), np.log(1.0000001 - A).T)
         cost = loss1 - loss2
         cost = np.sum(cost) / Y.shape[1]
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluate the neural network’s predictions
+        """
+        Evaluates the neural network’s predictions
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        - Y: numpy.ndarray with shape (1, m) that contains the correct labels
+        for the input data
+        Returns the neuron’s prediction and the cost of the network
+        - prediction is a numpy.ndarray with shape (1, m) containing
+        the predicted labels for each example
+        - label values are 1 if the output is >= 0.5, 0 otherwise
         """
         _, A2 = self.forward_prop(X)
         cost = self.cost(Y, A2)
@@ -92,7 +119,17 @@ class NeuralNetwork:
         return prediction, cost
 
     def gradient_descent(self, X, Y, A1, A2, alpha=0.05):
-        """Calculate one pass of gradient descent on the neural network
+        """
+        Calculates one pass of gradient descent on the neural network
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        - Y: numpy.ndarray with shape (1, m) that contains the correct labels
+        for the input data
+        - A1: output of the hidden layer
+        - A2: predicted output
+        - alpha: learning rate
+        Updates the private attributes __W1, __b1, __W2, and __b2
         """
         dz2 = A2 - Y
         dw2 = np.matmul(dz2, A1.T) / X.shape[1]

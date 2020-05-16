@@ -11,7 +11,9 @@ class NeuralNetwork:
     layer performing binary classification
     """
     def __init__(self, nx, nodes):
-        """class constructor
+        """
+        - nx: number of input features.
+        - nodes: number of nodes found in the hidden layer.
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')

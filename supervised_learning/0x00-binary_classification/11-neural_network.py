@@ -11,7 +11,9 @@ class NeuralNetwork:
     layer performing binary classification
     """
     def __init__(self, nx, nodes):
-        """class constructor
+        """
+        - nx: number of input features.
+        - nodes: number of nodes found in the hidden layer.
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -66,7 +68,15 @@ class NeuralNetwork:
         return self.__A2
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neural network
+        """
+        Calculates the forward propagation of the neural network.
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        Updates the private attributes __A1 and __A2
+        The neurons use a sigmoid activation function:
+        sig(z) = 1 / (1 + exp(-z))
+        Returns the private attributes __A1 and __A2
         """
         z1 = np.matmul(self.__W1, X) + self.__b1
         self.__A1 = 1 / (1 + np.exp(-z1))
@@ -75,9 +85,16 @@ class NeuralNetwork:
         return self.__A1, self.__A2
 
     def cost(self, Y, A):
-        """Calculate the cost of the model using logistic regression
+        """
+        Calculates the cost of the model using logistic regression
+        - Y: numpy.ndarray with shape (1, m) that contains the correct labels
+        for the input data
+        - A: numpy.ndarray with shape (1, m) containing the activated output
+        of the neuron for each example
+        Returns the cost
         """
         loss1 = -np.matmul(Y, np.log(A).T)
+        # 1.0000001 - A instead of 1 - A to avoid division by zero errors
         loss2 = np.matmul((1 - Y), np.log(1.0000001 - A).T)
         cost = loss1 - loss2
         cost = np.sum(cost) / Y.shape[1]

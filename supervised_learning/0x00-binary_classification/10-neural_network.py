@@ -11,7 +11,9 @@ class NeuralNetwork:
     layer performing binary classification
     """
     def __init__(self, nx, nodes):
-        """class constructor
+        """
+        - nx: number of input features.
+        - nodes: number of nodes found in the hidden layer.
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -66,7 +68,15 @@ class NeuralNetwork:
         return self.__A2
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neural network
+        """
+        Calculates the forward propagation of the neural network.
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        Updates the private attributes __A1 and __A2
+        The neurons use a sigmoid activation function:
+        sig(z) = 1 / (1 + exp(-z))
+        Returns the private attributes __A1 and __A2
         """
         z1 = np.matmul(self.__W1, X) + self.__b1
         self.__A1 = 1 / (1 + np.exp(-z1))
