@@ -8,7 +8,18 @@ class Neuron:
     """define a single neuron performing binary classification
     """
     def __init__(self, nx):
-        """class constructor
+        """
+        - nx: number of input features to the neuron
+
+        Private instance attributes:
+        -__W: The weights vector for the neuron.
+        Initialized using a random normal distribution.
+        - __b: The bias for the neuron.
+        Initialized to 0.
+        - __A: The activated output of the neuron (prediction).
+        Initialized to 0.
+        Each private attribute have its getter function
+        (no setter function).
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -37,7 +48,17 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neuron
+        """
+        Calculates the forward propagation of the neuron
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+
+        Updates the private attribute __A
+        The neuron use a sigmoid activation function
+        - sig(x) = 1 / (1 + exp(-x))
+
+        Returns the private attribute __A
         """
         x = np.matmul(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-x))
