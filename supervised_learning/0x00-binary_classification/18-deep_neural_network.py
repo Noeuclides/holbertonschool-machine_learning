@@ -12,7 +12,19 @@ class DeepNeuralNetwork:
     """
 
     def __init__(self, nx, layers):
-        """class constructor
+        """
+        - nx: number of input features
+        - layers: list representing the number of nodes in
+        each layer of the network
+        - L: number of layers in the neural network.
+        - cache: dictionary to hold all intermediary values of the network.
+        - weights: dictionary to hold all weights and biased of the network.
+        Initialized using the He et al. method and saved in the weights
+        dictionary using the key W{l} where {l} is the hidden layer
+        the weight belongs to.
+        - biases of the network are initialized to 0’s and saved
+        in the weights dictionary using the key b{l} where {l} is
+        the hidden layer the bias belongs to
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -55,7 +67,17 @@ class DeepNeuralNetwork:
         return self.__weights
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neural network
+        """
+        Calculates the forward propagation of the neural network
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        Updates the private attribute __cache:
+        The activated outputs of each layer are saved in the __cache
+        dictionary with the key A{l} where {l} is the hidden layer
+        the activated output belongs to
+        X are saved in the cache dictionary using the key A0
+        All neurons use a sigmoid activation function
         """
         self.__cache['A0'] = X
         for l in range(self.__L):

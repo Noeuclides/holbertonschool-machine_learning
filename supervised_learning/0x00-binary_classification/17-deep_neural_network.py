@@ -12,7 +12,19 @@ class DeepNeuralNetwork:
     """
 
     def __init__(self, nx, layers):
-        """class constructor
+        """
+        - nx: number of input features
+        - layers: list representing the number of nodes in
+        each layer of the network
+        - L: number of layers in the neural network.
+        - cache: dictionary to hold all intermediary values of the network.
+        - weights: dictionary to hold all weights and biased of the network.
+        Initialized using the He et al. method and saved in the weights
+        dictionary using the key W{l} where {l} is the hidden layer
+        the weight belongs to.
+        - biases of the network are initialized to 0’s and saved
+        in the weights dictionary using the key b{l} where {l} is
+        the hidden layer the bias belongs to
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')

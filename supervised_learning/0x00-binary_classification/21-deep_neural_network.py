@@ -12,7 +12,19 @@ class DeepNeuralNetwork:
     """
 
     def __init__(self, nx, layers):
-        """class constructor
+        """
+        - nx: number of input features
+        - layers: list representing the number of nodes in
+        each layer of the network
+        - L: number of layers in the neural network.
+        - cache: dictionary to hold all intermediary values of the network.
+        - weights: dictionary to hold all weights and biased of the network.
+        Initialized using the He et al. method and saved in the weights
+        dictionary using the key W{l} where {l} is the hidden layer
+        the weight belongs to.
+        - biases of the network are initialized to 0’s and saved
+        in the weights dictionary using the key b{l} where {l} is
+        the hidden layer the bias belongs to
         """
         if not isinstance(nx, int):
             raise TypeError('nx must be an integer')
@@ -55,7 +67,17 @@ class DeepNeuralNetwork:
         return self.__weights
 
     def forward_prop(self, X):
-        """Calculate the forward propagation of the neural network
+        """
+        Calculates the forward propagation of the neural network
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        Updates the private attribute __cache:
+        The activated outputs of each layer are saved in the __cache
+        dictionary with the key A{l} where {l} is the hidden layer
+        the activated output belongs to
+        X are saved in the cache dictionary using the key A0
+        All neurons use a sigmoid activation function
         """
         self.__cache['A0'] = X
         for l in range(self.__L):
@@ -71,23 +93,47 @@ class DeepNeuralNetwork:
         return self.__cache[out], self.__cache
 
     def cost(self, Y, A):
-        """Calculate the cost of the model using logistic regression
+        """
+        Calculates the cost of the model using logistic regression
+        - Y: numpy.ndarray with shape (1, m) that contains the correct
+        labels for the input data
+        - A: numpy.ndarray with shape (1, m) containing the activated
+        output of the neuron for each example
+        Returns the cost
         """
         loss1 = np.matmul(Y, np.log(A).T)
+        # 1.0000001 - A instead of 1 - A to avoid division by zero errors
         loss2 = np.matmul(1 - Y, np.log(1.0000001 - A.T))
         m = Y.shape[1]
         cost = np.sum(-(loss1 + loss2)) / m
         return cost
 
     def evaluate(self, X, Y):
-        """Evaluate the neural network’s predictions
+        """
+        Evaluates the neural network’s predictions
+        - X: numpy.ndarray with shape (nx, m) that contains the input data
+        - nx: number of input features to the neuron
+        - m: number of examples
+        - Y: numpy.ndarray with shape (1, m) that contains the correct labels
+        for the input data
+        Returns the neuron’s prediction and the cost of the network
+        - prediction is a numpy.ndarray with shape (1, m) containing
+        the predicted labels for each example
+        - label values are 1 if the output is >= 0.5, 0 otherwise
         """
         A, _ = self.forward_prop(X)
         cost = self.cost(Y, A)
         return np.where(A >= 0.5, 1, 0), cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Calculate one pass of gradient descent on the neural network
+        """
+        Calculates one pass of gradient descent on the neural network
+        - Y: numpy.ndarray with shape (1, m) that contains the correct
+        labels for the input data
+        - cache: dictionary containing all the intermediary values
+        of the network
+        - alpha: learning rate
+        Updates the private attribute __weights
         """
         W_copy = self.weights.copy()
         for layer in range(self.__L, 0, -1):
