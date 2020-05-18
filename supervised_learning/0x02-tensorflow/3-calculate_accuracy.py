@@ -6,9 +6,19 @@ import tensorflow as tf
 
 
 def calculate_accuracy(y, y_pred):
-    """calculate the accuracy of a prediction
     """
-    compare = tf.equal(tf.argmax(y_pred, axis=-1), tf.argmax(y, axis=-1))
+    calculates the accuracy of a prediction
+    - y: placeholder for the labels of the input data
+    - y_pred: tensor containing the network’s predictions
+    Returns: a tensor containing the decimal accuracy of the prediction
+    """
+    compare = tf.equal(tf.argmax(y_pred, axis=1), tf.argmax(y, axis=1))
+    comp = tf.equal(y_pred, y)
+    print("COMPARE: ", compare)
+    print("CMP: ", comp)
+
     cast = tf.cast(compare, tf.float32)
     accuracy = tf.reduce_mean(cast)
+    with tf.Session() as sess:
+        print(compare.eval())
     return accuracy
