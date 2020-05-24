@@ -17,8 +17,8 @@ def create_RMSProp_op(loss, alpha, beta2, epsilon):
     """
     # Construct a new RMSProp optimizer
     rmsprop = tf.train.RMSPropOptimizer(alpha,
-                                          decay=beta2,
-                                          epsilon=epsilon)
+                                        decay=beta2,
+                                        epsilon=epsilon)
     # minimize combines calls compute_gradients() and apply_gradients()
     minimize = rmsprop.minimize(loss)
 
