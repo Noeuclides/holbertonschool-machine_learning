@@ -34,10 +34,10 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
         dw_L2 = dw + lambtha * weights[key_w] / m
         db = np.sum(dz, axis=1, keepdims=True)
 
-        # Update parameters
-        weights[key_w] = weights[key_w] - alpha * dw_L2
-        weights[key_b] = weights[key_b] - alpha * db
-
         # derivative of the tanh activation function
         derivative = 1 - cache[key_A] ** 2
         dz = np.matmul(weights[key_w].T, dz) * derivative
+
+        # Update parameters
+        weights[key_w] = weights[key_w] - alpha * dw_L2
+        weights[key_b] = weights[key_b] - alpha * db
