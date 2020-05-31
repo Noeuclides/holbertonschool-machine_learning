@@ -22,22 +22,26 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     which uses a softmax activation
     The weights and biases of the network should be updated in place
     """
+    weights_copy = weights.copy()
     _, m = Y.shape
-    key_A = 'A{}'.format(L)
-    dz = cache[key_A] - Y
     for layer in range(L, 0, -1):
-        key_A = 'A{}'.format(layer - 1)
+        key_A = 'A{}'.format(layer)
+        key_Aprev = 'A{}'.format(layer - 1)
         key_w = 'W{}'.format(layer)
         key_b = 'b{}'.format(layer)
 
-        dw = np.matmul(dz, cache[key_A].T) / m
-        dw_L2 = dw + lambtha * weights[key_w] / m
+        if layer == L:
+            dz = cache[key_A] - Y
+        else:
+            key_wback = 'W{}'.format(layer + 1)
+            # derivative of the tanh activation function
+            derivative = 1 - cache[key_A] ** 2
+            dz = np.matmul(weights_copy[key_wback].T, dz) * derivative
+
+        dw = np.matmul(dz, cache[key_Aprev].T) / m
+        dw_L2 = dw + lambtha * weights_copy[key_w] / m
         db = np.sum(dz, axis=1, keepdims=True)
 
-        # derivative of the tanh activation function
-        derivative = 1 - cache[key_A] ** 2
-        dz = np.matmul(weights[key_w].T, dz) * derivative
-
         # Update parameters
-        weights[key_w] = weights[key_w] - alpha * dw_L2
-        weights[key_b] = weights[key_b] - alpha * db
+        weights[key_w] = weights_copy[key_w] - alpha * dw_L2
+        weights[key_b] = weights_copy[key_b] - alpha * db
