@@ -144,13 +144,12 @@ class DeepNeuralNetwork:
             bias = 'b{}'.format(layer)
             if layer == self.__L:
                 dz = cache[out] - Y
-                dw = np.matmul(dz, cache[input].T) / Y.shape[1]
             else:
                 w1 = 'W{}'.format(layer + 1)
                 back = np.matmul(W_copy[w1].T, dz)
                 derivative = cache[key] * (1 - cache[key])
                 dz = back * derivative
-                dw = np.matmul(dz, cache[input].T) / Y.shape[1]
+            dw = np.matmul(dz, cache[input].T) / Y.shape[1]
             db = np.sum(dz, axis=1, keepdims=True) / Y.shape[1]
             self.__weights[w] = W_copy[w] - alpha * dw
             self.__weights[bias] = W_copy[bias] - alpha * db
