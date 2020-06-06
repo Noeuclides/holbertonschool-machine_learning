@@ -36,9 +36,12 @@ def train_model(network, data, labels, batch_size, epochs,
     - verbose: determines if output should be printed during training
     - shuffle: determines whether to shuffle the batches every epoch.
     """
-    def scheduler(epochs, alpha):
-        alpha = alpha / (1 + decay_rate * epochs)
-        return alpha
+    def scheduler(epochs):
+        """
+        performs learning rate decay stepwise
+        - epochs: number of epochs
+        """
+        return alpha / (1 + decay_rate * epochs)
 
     callback = []
     if early_stopping and validation_data:
