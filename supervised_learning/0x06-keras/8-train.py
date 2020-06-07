@@ -58,14 +58,14 @@ def train_model(network, data, labels, batch_size, epochs,
     if learning_rate_decay and validation_data:
         callbacks.append(
                     K.callbacks.LearningRateScheduler(schedule=scheduler,
-                                                      verbose=1)
+                                                      verbose=verbose)
                     )
     if save_best and validation_data:
         callbacks.append(
                     K.callbacks.ModelCheckpoint(filepath,
                                                 monitor='val_loss',
-                                                verbose=1,
-                                                save_best_only=True)
+                                                verbose=verbose,
+                                                save_best_only=save_best)
                     )
 
     history = network.fit(data, labels,
