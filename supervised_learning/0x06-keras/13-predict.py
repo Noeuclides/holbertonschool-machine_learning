@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """module make a predicton
 """
-import numpy as np
+import tensorflow.keras as K
 
 
 def predict(network, data, verbose=False):
