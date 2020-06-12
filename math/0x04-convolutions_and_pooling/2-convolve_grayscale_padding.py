@@ -5,36 +5,40 @@
 import numpy as np
 
 
-def zero_pad(array, pad1, pad2):
+def convolve_grayscale_padding(images, kernel, padding):
     """
-    padding an array with zeros
-    """
-    array_pad = np.pad(array, ((0, 0), (pad1, pad1), (pad2, pad2)),
-                       'constant', constant_values=(0, 0))
+    performs a convolution on grayscale images with custom padding:
 
-    return array_pad
-
-
-def convolve_grayscale_padding(images, kernel, padding): 
-    """
-    performs a valid convolution on grayscale images:
-    - images: numpy.ndarray, shape (m, h, w), with multiple grayscale images
-    - kernel: numpy.ndarray, shape (kh, kw), with the kernel for the conv.
+    - images: numpy.ndarray with shape (m, h, w) containing
+    multiple grayscale images
+        - m: number of images
+        - h: height in pixels of the images
+        - w: width in pixels of the images
+    - kernel: numpy.ndarray with shape (kh, kw) containing the
+    kernel for the convolution
+        - kh: height of the kernel
+        - kw: width of the kernel
     - padding: tuple of (ph, pw)
+        - ph: padding for the height of the image
+        - pw: padding for the width of the image
+        - the image should be padded with 0’s
+    Returns: a numpy.ndarray containing the convolved images
     """
-    step_h = kernel.shape[0]
-    step_w = kernel.shape[1]
-    images_pad = zero_pad(images, padding[0], padding[1])
-    window_h = images_pad.shape[1] - kernel.shape[0] + 1
-    window_w = images_pad.shape[2] - kernel.shape[1] + 1
-    m = images.shape[0]
-    img = np.arange(m)
+    m, h, w = images.shape
+    kh, kw = kernel.shape
+    ph, pw = padding
 
-    convolution = np.zeros((m, window_h, window_w))
-    for i in range(window_h):
-        for j in range(window_w):
-            convole = images_pad[img, i:i + step_h, j:j + step_w] * kernel
-            pos = np.sum(convole, axis=(1, 2))
-            convolution[img, i, j] = pos
+    images_pad = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), 'constant')
 
-    return convolution
+    out_w = w + 2*pw - kw + 1
+    out_h = h + 2*ph - kh + 1
+
+    convolve_out = np.ndarray((m, out_h, out_w))
+
+    for i in range(out_h):
+        for j in range(out_w):
+            convolve_out[:, i, j] = np.sum(
+                images_pad[:, i:kh+i, j:kw+j] * kernel,
+                axis=(1, 2))
+
+    return convolve_out
