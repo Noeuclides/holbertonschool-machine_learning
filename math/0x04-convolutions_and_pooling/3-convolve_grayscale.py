@@ -5,44 +5,55 @@
 import numpy as np
 
 
-def zero_pad(array, pad1, pad2):
-    """
-    padding an array with zeros
-    """
-    array_pad = np.pad(array, ((0, 0), (pad1, pad1), (pad2, pad2)),
-                       'constant', constant_values=(0, 0))
-
-    return array_pad
-
-
 def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     """
-    performs a valid convolution on grayscale images:
-    - images: numpy.ndarray, shape (m, h, w), with multiple grayscale images
-    - kernel: numpy.ndarray, shape (kh, kw), with the kernel for the conv.
-    - padding: tuple of (ph, pw),‘same’, or ‘valid’
+    performs a convolution on grayscale images:
+    - images: numpy.ndarray with shape (m, h, w) containing
+    multiple grayscale images
+        - m: number of images
+        - h: height in pixels of the images
+        - w: width in pixels of the images
+    - kernel: numpy.ndarray with shape (kh, kw) containing the
+    kernel for the convolution
+        - kh: height of the kernel
+        - kw: width of the kernel
+    - padding: either a tuple of (ph, pw), ‘same’, or ‘valid’
+        if ‘same’, performs a same convolution
+        if ‘valid’, performs a valid convolution
+        if a tuple:
+            - ph: padding for the height of the image
+            - pw: padding for the width of the image
+        the image should be padded with 0’s
     - stride: tuple of (sh, sw)
+        - sh: stride for the height of the image
+        - sw: stride for the width of the image
+    Returns: a numpy.ndarray containing the convolved images
     """
-    step_h = kernel.shape[0]
-    step_w = kernel.shape[1]
-    if isinstance(padding, tuple):
-        images_pad = zero_pad(images, padding[0], padding[1])
+    m, h, w = images.shape
+    kh, kw = kernel.shape
+    if padding == 'same':
+        ph = int((kh - 1) / 2)
+        pw = int((kw - 1) / 2)
     elif padding == 'valid':
-        images_pad = zero_pad(images, int(step_h / 2), int(step_w / 2))
+        ph, pw = 0, 0
     else:
-        images_pad = images
-    window_h = images_pad.shape[1] - kernel.shape[0]
-    window_w = images_pad.shape[2] - kernel.shape[1]
-    m = images.shape[0]
-    img = np.arange(m)
-    convolution = np.zeros((m,
-                            int(window_h / stride[0] + 1),
-                            int(window_w / stride[1] + 1)))
-    for i in range(0, int(window_h / stride[0] + 1)):
-        for j in range(0, int(window_w / stride[1] + 1)):
-            print(i, j)
-            convole = images_pad[img, i:i + step_h, j:j + step_w] * kernel
-            pos = np.sum(convole, axis=(1, 2))
-            convolution[img, i, j] = pos
+        ph, pw = padding
 
-    return convolution
+    sh, sw = stride
+
+    images_pad = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), 'constant')
+    _, h_pad, w_pad = images_pad.shape
+
+    out_w = int((w + 2*pw - kw) / sw + 1)
+    out_h = int((h + 2*ph - kh) / sh + 1)
+
+    convolve_out = np.ndarray((m, out_h, out_w))
+
+    for i in range(0, h_pad, sh):
+        for j in range(0, w_pad, sw):
+            if kh + i <= h_pad and kw + j <= w_pad:
+                convolve_out[:, int(i / sh), int(j / sw)] = np.sum(
+                    images_pad[:, i:kh+i, j:kw+j] * kernel,
+                    axis=(1, 2))
+
+    return convolve_out
