@@ -7,45 +7,54 @@ import numpy as np
 
 def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     """
-    performs forward propagation over a convolutional layer of a nn:
-    - A_prev: numpy.ndarray (m, h_prev, w_prev, c_prev) with the output
-    of the previous layer.
-    - W: numpy.ndarray (kh, kw, c_prev, c_new) with the kernels for the conv.
-    - b: numpy.ndarray (1, 1, 1, c_new) with the biases applied to the conv.
+    performs forward propagation over a convolutional layer of a
+    neural network:
+    - A_prev: numpy.ndarray of shape (m, h_prev, w_prev, c_prev)
+    containing the output of the previous layer
+        - m: number of examples
+        - h_prev: height of the previous layer
+        - w_prev: width of the previous layer
+        - c_prev: number of channels in the previous layer
+    - W: numpy.ndarray of shape (kh, kw, c_prev, c_new) containing
+    the kernels for the convolution
+        - kh: filter height
+        - kw: filter width
+        - c_prev: number of channels in the previous layer
+        - c_new: number of channels in the output
+    - b: numpy.ndarray of shape (1, 1, 1, c_new) containing the biases
+    applied to the convolution
     - activation: activation function applied to the convolution
-    - padding: string that is either same or valid
-    - stride: tuple of (sh, sw)
+    - padding: string that is either same or valid, indicating the
+    type of padding used
+    - stride: tuple of (sh, sw) containing the strides for the convolution
+        - sh: stride for the height
+        - sw: stride for the width
+    Returns: the output of the convolutional layer
     """
     m, h_prev, w_prev, c_prev = A_prev.shape
     kh, kw, c_prev, c_new = W.shape
     sh, sw = stride
-    pad_height, pad_width = 0, 0
-    if padding == 'same':
-        pad_height = int(((sh * h_prev) - sh + kh - h_prev) / 2)
-        pad_width = int(((sw * w_prev) - sw + kw - w_prev) / 2)
 
-    A_prev = np.pad(
-        array=A_prev,
-        pad_width=[
-            (0, 0),
-            (pad_height, pad_height),
-            (pad_width, pad_width),
-            (0, 0)],
-        mode='constant',
-        constant_values=0)
+    if padding == "valid":
+        ph, pw = 0, 0
+    if padding == "same":
+        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
 
-    output_h = int(((h_prev + (2 * pad_height) - kh) / sh) + 1)
-    output_w = int(((w_prev + (2 * pad_width) - kw) / sw) + 1)
-    convolution = np.zeros((m, output_h, output_w, c_new))
+    out_h = int((h_prev - kh) / sh + 1)
+    out_w = int((w_prev - kw) / sw + 1)
 
-    prev_m = np.arange(0, m)
-    for h in range(output_h):
-        for w in range(output_w):
-            for c in range(c_new):
-                convole = A_prev[prev_m, h * sh:kh +
-                                 (h * sh), w * sw:kw + (w * sw)] *
-                W[:, :, :, c]
-                summatory = np.sum(convole, axis=(1, 2, 3))
-                convolution[prev_m, h, w, c] = activation(
-                    summatory + b[0, 0, 0, c])
-    return convolution
+    out_image = np.ndarray((m, out_h, out_w, c_new))
+
+    for i in range(0, out_h, sh):
+        for j in range(0, out_w, sw):
+            for channel in range(c_new):
+                out_image[
+                    :,
+                    int(i / sh),
+                    int(j / sw),
+                    channel] = activation(
+                    np.sum(A_prev[:, i:i + kh, j:j + kw, :] *
+                           W[:, :, :, channel] + b, axis=(1, 2, 3)))
+
+    return out_image
