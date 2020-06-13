@@ -45,6 +45,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     out_w = int((w_prev - kw) / sw + 1)
 
     out_image = np.ndarray((m, out_h, out_w, c_new))
+    pad_images = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)))
 
     for i in range(0, out_h, sh):
         for j in range(0, out_w, sw):
@@ -54,7 +55,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
                     int(i / sh),
                     int(j / sw),
                     channel] = activation(
-                    np.sum(A_prev[:, i:i + kh, j:j + kw, :] *
+                    np.sum(pad_images[:, i:i + kh, j:j + kw, :] *
                            W[:, :, :, channel] + b, axis=(1, 2, 3)))
 
     return out_image
