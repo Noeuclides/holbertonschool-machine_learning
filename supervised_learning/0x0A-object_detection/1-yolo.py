@@ -3,6 +3,7 @@
 Module to initialize Yolo
 """
 import tensorflow.keras as K
+import numpy as np
 
 
 class Yolo:
@@ -39,7 +40,6 @@ class Yolo:
         self.nms_t = nms_t
         self.anchors = anchors
 
-
     def process_outputs(self, outputs, image_size):
         """
         - outputs: list of numpy.ndarrays containing the
@@ -68,5 +68,4 @@ class Yolo:
             (grid_height, grid_width, anchor_boxes, classes) containing
             the box’s class probabilities for each output, respectively
         """
-        
         return
