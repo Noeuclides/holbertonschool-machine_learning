@@ -34,7 +34,7 @@ class Yolo:
         """
         self.model = K.models.load_model(model_path)
         with open(classes_path, 'r') as file:
-            self.class_names = [class_name for class_name in file]
+            self.class_names = [class_name.strip() for class_name in file]
         self.class_t = class_t
         self.nms_t = nms_t
         self.anchors = anchors
