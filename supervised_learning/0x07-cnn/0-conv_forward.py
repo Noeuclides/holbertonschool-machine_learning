@@ -32,6 +32,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     Returns: the output of the convolutional layer
     """
     m, h_prev, w_prev, c_prev = A_prev.shape
+    print(A_prev.shape, W.shape)
     kh, kw, c_prev, c_new = W.shape
     sh, sw = stride
 
@@ -41,8 +42,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
         pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
 
-    out_h = int((h_prev - kh) / sh + 1)
-    out_w = int((w_prev - kw) / sw + 1)
+    out_h = int((h_prev - kh + 2 * ph) / sh + 1)
+    out_w = int((w_prev - kw + 2 * pw) / sw + 1)
 
     out_image = np.ndarray((m, out_h, out_w, c_new))
     pad_images = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)))
@@ -50,12 +51,8 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
     for i in range(0, out_h, sh):
         for j in range(0, out_w, sw):
             for channel in range(c_new):
-                out_image[
-                    :,
-                    int(i / sh),
-                    int(j / sw),
-                    channel] = activation(
-                    np.sum(pad_images[:, i:i + kh, j:j + kw, :] *
-                           W[:, :, :, channel] + b, axis=(1, 2, 3)))
+                out_image[:, int(i / sh), int(j / sw), channel] = np.sum(
+                    pad_images[:, i:i + kh, j:j + kw, :] *
+                    W[:, :, :, channel], axis=(1, 2, 3))
 
-    return out_image
+    return activation(out_image + b)
