@@ -41,26 +41,29 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if padding == "same":
-        ph = int(((h_new - 1) * sh + kh - h_prev) / 2)
-        ph = int(((w_new - 1) * sh + kw - w_prev) / 2)
+        ph = int(np.ceil(((sh*h_prev)-sh+kh-h_prev)/2))
+        pw = int(np.ceil(((sw*w_prev)-sw+kw-w_prev)/2))
     else:
         ph, pw = 0, 0
 
     out_img = np.pad(A_prev, ((0, 0), (ph, ph), (pw, pw), (0, 0)))
 
-    dA = np.zeros(A_prev.shape)
+    dA = np.zeros(out_img.shape)
     dW = np.zeros(W.shape)
-    db = np.sum(dZ, axis=(1, 2, 3), keepdims=True)
+    db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
     for img in range(m):
-        for i in range(0, h_new, sh):
-            for j in range(0, w_new, sw):
+        for i in range(h_new):
+            for j in range(w_new):
                 for ch in range(c_new):
-                    row = int(i / sh)
-                    col = int(j / sw)
+                    row = i * sh
+                    col = j * sw
                     dA[img, row:row + kh,
-                       col:col + kw, :] += W[:, :, :, ch] * dZ[img, i, j, ch]
+                       col:col + kw, :] += dZ[img, i, j, ch] * W[:, :, :, ch]
                     pad_img = out_img[img, row:row + kh, col:col + kw, :]
                     dW[:, :, :, ch] += pad_img * dZ[img, i, j, ch]
+
+    if padding == 'same':
+        dA = np.flip(dA)
 
     return dA, dW, db
