@@ -63,7 +63,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     pad_img = out_img[img, row:row + kh, col:col + kw, :]
                     dW[:, :, :, ch] += pad_img * dZ[img, i, j, ch]
 
-    # if padding == 'same':
-        # dA = dA[:, ph:-ph, pw:-pw, :]
+    if padding == 'same':
+        dA = np.flip(dA, (1, 2))
 
     return dA, dW, db
