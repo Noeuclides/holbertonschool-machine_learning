@@ -13,7 +13,10 @@ def determinant(matrix: list) -> int:
     if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
     if len(matrix) == 1:
-        return 1 if len(matrix[0]) == 0 else matrix[0][0]
+        if len(matrix[0]) == 0:
+            return 1
+        elif len(matrix[0]) == 1:
+            return matrix[0][0]
     for elem in matrix:
         # check if it's a square matrix
         if len(elem) != len(matrix):
