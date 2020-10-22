@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-module to get the cofactor matrix of a matrix
+module to get the adjugate matrix of a matrix
 """
 
 
@@ -45,7 +45,7 @@ def recursive_minor(matrix: list) -> list:
     return minor_det
 
 
-def cofactor(matrix: list) -> list:
+def adjugate(matrix: list) -> list:
     """
     calculates the cofactor matrix of a matrix:
     - matrix: list of lists whose cofactor matrix should be calculated
@@ -66,11 +66,18 @@ def cofactor(matrix: list) -> list:
             raise TypeError("matrix must be a list of lists")
     if len(matrix) == 2:
         return [
-            [matrix[1][1], -1 * matrix[1][0]],
-            [-1 * matrix[0][1], matrix[0][0]]
+            [matrix[1][1], -1 * matrix[0][1]],
+            [-1 * matrix[1][0], matrix[0][0]]
             ]
+    adjugate = []
+    cofactor = recursive_minor(matrix)
+    for i in range(len(cofactor)):
+        inner = []
+        for j in range(len(cofactor[i])):
+            inner.append(cofactor[j][i])
+        adjugate.append(inner)
 
-    return recursive_minor(matrix)
+    return adjugate
 
 
 def two_by_two_det(matrix: list) -> int:
