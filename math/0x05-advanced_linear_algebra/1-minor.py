@@ -3,13 +3,30 @@
 module to get the minor matrix of a matrix
 """
 
+def determinant(matrix: list) -> int:
+    """
+    calculates the determinant of a matrix:
+    - matrix: list of lists whose determinant should be calculated
+    Returns: the determinant of the matrix
+    """
+    if len(matrix) == 2:
+        return two_by_two_det(matrix)
 
-def recursive_minor(matrix: list, side: int = 3) -> list:
+    det = 0
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            minor = minor_matrix(matrix, i, j)
+            cofactor = (-1)**(j)
+            det += matrix[0][j] * cofactor * determinant(minor)
+
+    return det
+
+
+def recursive_minor(matrix: list) -> list:
     """
     calculates the minor matrix of a square matrix with side bigger than 2
     recursevely:
     - matrix: list of lists whose minor matrix should be calculated
-    - side: length of the square matrix, 3 by default
     Returns: the minor matrix of matrix
     """
     if len(matrix) == 2:
@@ -18,12 +35,10 @@ def recursive_minor(matrix: list, side: int = 3) -> list:
     minor_det = []
     for i in range(len(matrix)):
         inner = []
+        det = 0
         for j in range(len(matrix[i])):
             sub_minor = minor_matrix(matrix, i, j)
-            if side > 3:
-                inner.append(matrix[i][j] * recursive_minor(sub_minor))
-            else:
-                inner.append(recursive_minor(sub_minor))
+            inner.append(determinant(sub_minor))
         minor_det.append(inner)
     return minor_det
 
@@ -53,7 +68,7 @@ def minor(matrix: list) -> list:
             [matrix[0][1], matrix[0][0]]
             ]
 
-    return recursive_minor(matrix, len(matrix))
+    return recursive_minor(matrix)
 
 
 def two_by_two_det(matrix: list) -> int:
