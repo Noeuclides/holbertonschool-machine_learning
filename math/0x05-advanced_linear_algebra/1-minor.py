@@ -3,6 +3,7 @@
 module to get the minor matrix of a matrix
 """
 
+
 def determinant(matrix: list) -> int:
     """
     calculates the determinant of a matrix:
