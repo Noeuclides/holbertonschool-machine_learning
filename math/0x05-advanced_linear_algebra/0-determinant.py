@@ -2,7 +2,6 @@
 """
 module to get the determinant of a matrix
 """
-import copy
 
 
 def determinant(matrix: list) -> int:
@@ -49,7 +48,7 @@ def minor_matrix(matrix: list, col_to_del: int) -> list:
     - col_to_del: column that has to be remove.
     return matrix minor
     """
-    mat = copy.deepcopy(matrix)
+    mat = deep_copy(matrix)
     # deletes the first row of the matrix
     del mat[0]
     # loop for delete the column in the index col_to_del
@@ -70,3 +69,19 @@ def check_square(matrix: list) -> bool:
             return False
 
     return True
+
+
+def deep_copy(matrix: list) -> list:
+    """
+    makes a deep copy of a matrix
+    - matrix: matrix to make a deep copy
+    return deep copy
+    """
+    new_mat = []
+    for i in range(len(matrix)):
+        inner = []
+        for elem in matrix[i]:
+            inner.append(elem)
+        new_mat.append(inner)
+
+    return new_mat
