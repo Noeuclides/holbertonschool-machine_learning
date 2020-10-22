@@ -10,14 +10,16 @@ def determinant(matrix: list) -> int:
     - matrix: list of lists whose determinant should be calculated
     Returns: the determinant of the matrix
     """
-    if len(matrix) == 0:
+    if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
     if len(matrix) == 1:
         return 1 if len(matrix[0]) == 0 else matrix[0][0]
-
-    if not check_square(matrix):
-        raise ValueError("matrix must be a square matrix")
-
+    for elem in matrix:
+        # check if it's a square matrix
+        if len(elem) != len(matrix):
+            raise ValueError("matrix must be a square matrix")
+        if not isinstance(elem, list):
+            raise TypeError("matrix must be a list of lists")
     if len(matrix) == 2:
         return two_by_two_det(matrix)
 
@@ -56,19 +58,6 @@ def minor_matrix(matrix: list, col_to_del: int) -> list:
         del mat[i][col_to_del]
 
     return mat
-
-
-def check_square(matrix: list) -> bool:
-    """
-    check if it's a square matrix
-    - matrix: matrix to be checked
-    return True if it's a square matrix, False if not
-    """
-    for elem in matrix:
-        if len(elem) != len(matrix):
-            return False
-
-    return True
 
 
 def deep_copy(matrix: list) -> list:
