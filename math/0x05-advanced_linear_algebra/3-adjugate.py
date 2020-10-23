@@ -10,6 +10,15 @@ def determinant(matrix: list) -> int:
     - matrix: list of lists whose determinant should be calculated
     Returns: the determinant of the matrix
     """
+    if len(matrix) == 1:
+        if len(matrix[0]) == 0:
+            return 1
+        elif len(matrix[0]) == 1:
+            return matrix[0][0]
+    for elem in matrix:
+        # check if it's a square matrix
+        if len(elem) != len(matrix):
+            raise ValueError("matrix must be a non-empty square matrix")
     if len(matrix) == 2:
         return two_by_two_det(matrix)
 
@@ -47,12 +56,16 @@ def recursive_minor(matrix: list) -> list:
 
 def adjugate(matrix: list) -> list:
     """
-    calculates the cofactor matrix of a matrix:
+    calculates the adjugate matrix of a matrix (traspose of minor
+    matrix of a matrix):
     - matrix: list of lists whose cofactor matrix should be calculated
-    Returns: the cofactor matrix of matrix
+    Returns: the adjugate matrix of matrix
     """
     if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
+    for elem in matrix:
+        if not isinstance(elem, list):
+            raise TypeError("matrix must be a list of lists")
     if len(matrix) == 1:
         if len(matrix[0]) == 1:
             return [[1]]
@@ -62,8 +75,7 @@ def adjugate(matrix: list) -> list:
         # check if it's a square matrix
         if len(elem) != len(matrix):
             raise ValueError("matrix must be a non-empty square matrix")
-        if not isinstance(elem, list):
-            raise TypeError("matrix must be a list of lists")
+
     if len(matrix) == 2:
         return [
             [matrix[1][1], -1 * matrix[0][1]],
