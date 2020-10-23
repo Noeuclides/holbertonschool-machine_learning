@@ -91,7 +91,7 @@ def inverse(matrix: list) -> list:
     for i in range(len(cofactor)):
         inner = []
         for j in range(len(cofactor[i])):
-            inner.append(cofactor[j][i] * (1 / det))
+            inner.append(cofactor[j][i] / det)
         inverse.append(inner)
 
     return inverse
