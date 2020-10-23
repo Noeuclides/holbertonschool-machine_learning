@@ -12,6 +12,7 @@ if __name__ == '__main__':
     mat6 = np.array([])
     mat7 = np.array([[1, 2, 3], [4, 5, 6]])
     mat8 = [[1, 2], [1, 2]]
+    mat9 = np.array([[1, 2], [1, 2]])
 
     print(definiteness(mat1))
     print(definiteness(mat2))
@@ -20,6 +21,7 @@ if __name__ == '__main__':
     print(definiteness(mat5))
     print(definiteness(mat6))
     print(definiteness(mat7))
+    print(definiteness(mat9))
     try:
         definiteness(mat8)
     except Exception as e:
