@@ -12,6 +12,9 @@ def determinant(matrix: list) -> int:
     """
     if not isinstance(matrix, list) or len(matrix) == 0:
         raise TypeError("matrix must be a list of lists")
+    for elem in matrix:
+        if not isinstance(elem, list):
+            raise TypeError("matrix must be a list of lists")
     if len(matrix) == 1:
         if len(matrix[0]) == 0:
             return 1
@@ -21,8 +24,6 @@ def determinant(matrix: list) -> int:
         # check if it's a square matrix
         if len(elem) != len(matrix):
             raise ValueError("matrix must be a square matrix")
-        if not isinstance(elem, list):
-            raise TypeError("matrix must be a list of lists")
     if len(matrix) == 2:
         return two_by_two_det(matrix)
 
