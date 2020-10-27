@@ -22,6 +22,6 @@ class MultiNormal:
 
         mean = np.mean(data.T, axis=0)
         data_mean = data.T - mean
-        cov = (np.dot(data_mean.T, data_mean)) * (1 / data.shape[1])
+        cov = (np.matmul(data_mean.T, data_mean)) / (data.shape[1] - 1)
         self.mean = np.array([mean]).T
         self.cov = cov
