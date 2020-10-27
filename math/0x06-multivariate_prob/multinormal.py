@@ -44,8 +44,8 @@ class MultiNormal:
         det = np.linalg.det(self.cov)
         den = ((2 * np.pi) ** (x.shape[0] / 2)) * np.sqrt(det)
         inv = np.linalg.inv(self.cov)
-        diff = x - self.mean
-        exponent = -1 * np.dot(np.dot(diff.T, inv), diff) / 2
+        diff = np.dot((x - self.mean).T, inv)
+        exponent = -1 * np.dot(diff, (x - self.mean)) / 2
         pdf = (1 / den) * np.exp(exponent)
 
         return pdf[0][0]
