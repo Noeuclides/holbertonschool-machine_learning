@@ -45,7 +45,7 @@ class MultiNormal:
         den = ((2 * np.pi) ** (x.shape[0] / 2)) * np.sqrt(det)
         inv = np.linalg.inv(self.cov)
         diff = x - self.mean
-        exponent = np.dot(np.dot(diff.T, inv), diff / -2)
-        pdf = np.exp(exponent) / den
+        exponent = -1 * np.dot(np.dot(diff.T, inv), diff) / 2
+        pdf = (1 / den) * np.exp(exponent)
 
         return pdf[0][0]
