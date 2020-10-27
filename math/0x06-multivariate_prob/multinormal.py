@@ -36,7 +36,7 @@ class MultiNormal:
         Returns the value of the PDF
         """
         if not isinstance(x, np.ndarray):
-            raise TypeError("x must be a 2D numpy.ndarray")
+            raise TypeError("x must be a numpy.ndarray")
         d = self.cov.shape[0]
         if len(x.shape) != 2 or x.shape[1] != 1 or x.shape[0] != d:
             raise ValueError("x must have the shape ({}, 1)".format(d))
