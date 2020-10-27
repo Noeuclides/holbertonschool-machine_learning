@@ -36,14 +36,15 @@ class MultiNormal:
         Returns the value of the PDF
         """
         if not isinstance(x, np.ndarray):
-            raise TypeError("data must be a 2D numpy.ndarray")
+            raise TypeError("x must be a 2D numpy.ndarray")
         if x.shape != self.mean.shape:
             raise ValueError(f'x must have the shape {self.mean.shape}')
+
         det = np.linalg.det(self.cov)
         den = ((2 * np.pi) ** (x.shape[0] / 2)) * np.sqrt(det)
         inv = np.linalg.inv(self.cov)
         diff = x - self.mean
-        exponent = diff.T * inv * diff * (-1 / 2)
+        exponent = np.dot(np.dot(diff.T, inv), diff) * (-1 / 2)
         pdf = np.exp(exponent) / den
 
         return pdf[0][0]
