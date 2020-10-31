@@ -21,9 +21,9 @@ def likelihood(x, n, P):
     P(A|B) = P(B|A) * P(A) / P(B)
     likelihood = P(B|A)
     """
-    if not isinstance(n, int) and n <= 0:
+    if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
-    if not isinstance(x, int) and x <= 0:
+    if not isinstance(x, int) or x <= 0:
         raise ValueError(
             "x must be an integer that is greater than or equal to 0")
     if x > n:
@@ -35,6 +35,6 @@ def likelihood(x, n, P):
 
     fac = np.math.factorial
     combinatory = fac(n) / (fac(x) * fac(n - x))
-    binomial_prob = combinatory * ((P ** x) * (1 - P) ** (n - x))
+    binomial_prob = combinatory * ((P ** x) * ((1 - P) ** (n - x)))
 
     return binomial_prob
