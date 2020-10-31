@@ -18,15 +18,20 @@ def posterior(x, n, P, Pr):
 
     Returns: a 1D numpy.ndarray containing the intersection of obtaining
     x and n with each probability in P, respectively
+    Assuming that x follows a binomial distribution.
+    P(A|B) = P(B|A) * P(A) / P(B)
+    likelihood = P(B|A)
+    intersection = P(BnA)
+    marginal_prob = P(B)
     """
-    if not isinstance(n, int) and n < 0:
+    if not isinstance(n, int) and n <= 0:
         raise ValueError("n must be a positive integer")
     if not isinstance(x, int) and x <= 0:
         raise ValueError(
             "x must be an integer that is greater than or equal to 0")
     if x > n:
         raise ValueError("x cannot be greater than n")
-    if len(P.shape) > 1:
+    if len(P.shape) != 1:
         raise TypeError("P must be a 1D numpy.ndarray")
     if not isinstance(Pr, np.ndarray):
         raise TypeError("Pr must be a numpy.ndarray with the same shape as P")
