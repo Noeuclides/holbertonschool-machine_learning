@@ -36,9 +36,9 @@ def intersection(x, n, P, Pr):
         raise TypeError("Pr must be a numpy.ndarray with the same shape as P")
     if any([False for i in P if i < 0 or i > 1]):
         raise ValueError("All values in P must be in the range [0, 1]")
-    if any([False for i in Pr if i < 0 or i > 1]):
+    if np.amax(Pr) < 0 or np.amin(Pr) > 1:
         raise ValueError("All values in Pr must be in the range [0, 1]")
-    if not np.isclose(np.sum(Pr), 1):
+    if not np.isclose([np.sum(Pr)], [1])[0]:
         raise ValueError("Pr must sum to 1")
 
     fac = np.math.factorial
