@@ -1,0 +1,14 @@
+autopep8==1.5.4
+beautifulsoup4==4.9.3
+html5lib==1.1
+joblib==0.17.0
+mechanize==0.4.5
+numpy==1.19.2
+parse==1.18.0
+pycodestyle==2.6.0
+scikit-learn==0.21.0
+scipy==1.5.3
+six==1.15.0
+soupsieve==2.0.1
+toml==0.10.1
+webencodings==0.5.1
