@@ -52,7 +52,7 @@ def kmeans(X, k, iterations=1000):
     for i in range(iterations):
         distance = np.linalg.norm(X - C[:, None], axis=-1)
         clss = np.argmin(distance, axis=-1)
-        
+
         cluster = np.copy(C)
         for j in range(k):
             index = np.argwhere(clss == j)
@@ -65,5 +65,5 @@ def kmeans(X, k, iterations=1000):
 
     distance = np.linalg.norm(X[:, None] - C, axis=-1)
     clss = np.argmin(distance, axis=-1)
-    
+
     return C, clss
