@@ -18,7 +18,8 @@ def initialize(X, k):
     Returns: a numpy.ndarray of shape (k, d) containing the initialized
     centroids for each cluster, or None on failure
     """
-    if not isinstance(X, np.ndarray) or X.shape != 2:
+    print(X.shape)
+    if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None
     if not isinstance(k, int) or k <= 0:
         return None
