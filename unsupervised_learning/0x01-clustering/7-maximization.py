@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+Module to get Maximization step
 """
 import numpy as np
 
@@ -29,7 +30,9 @@ def maximization(X, g):
         return None, None, None
 
     n, d = X.shape
-    k = g.shape[0]
+    k, n_g = g.shape
+    if n != n_g:
+        return None, None, None
     if not np.isclose(np.sum(g, axis=0), np.ones((n, ))).all():
         return None, None, None
 
