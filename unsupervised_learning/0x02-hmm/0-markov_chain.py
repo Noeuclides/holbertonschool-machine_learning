@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+Markov chain module
 """
 import numpy as np
 
