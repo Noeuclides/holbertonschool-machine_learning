@@ -29,6 +29,8 @@
 ### [0. Markov Chain ](./0-markov_chain.py)
 * determines the probability of a markov chain being in a particular state after a specified number of iterations.
 
+### [1. Regular Chains ](./1-regular.py)
+* determines the steady state probabilities of a regular markov chain.
 
 ---
 
