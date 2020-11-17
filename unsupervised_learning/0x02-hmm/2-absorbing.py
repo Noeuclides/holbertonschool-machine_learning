@@ -39,6 +39,9 @@ def absorbing(P):
 
 
 def check_absorbing(P, column, index):
+    """
+    check absorbing
+    """
     if len(index) == P.shape[0]:
         return False
     if (np.delete(column, index) > 0).all():
