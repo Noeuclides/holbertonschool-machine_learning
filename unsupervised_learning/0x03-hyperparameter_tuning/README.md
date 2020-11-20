@@ -21,6 +21,7 @@
 ---
 ### [0. Initialize Gaussian Process ](./0-gp.py)
 * represents a noiseless 1D Gaussian process.
+Using dot product distance method:
 ![euclidean distance dot product method](https://github.com/noeuclides/holbertonschool-machine_learning/blob/master/unsupervised_learning/0x03-hyperparameter_tuning/img/distance_dot_product.png?raw=true)
 
 ### [1. Gaussian Process Prediction ](./1-gp.py)
