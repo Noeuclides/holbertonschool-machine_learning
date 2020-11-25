@@ -23,4 +23,39 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
         - decoder: decoder model
         auto is the sparse autoencoder model
     """
-    pass
+    # encoder
+    encoder_input = tf.keras.Input(shape=(input_dims,))
+    encoder = tf.keras.layers.Dense(
+        hidden_layers[0], activation='relu')(encoder_input)
+    regularizer = tf.keras.regularizers.l1(lambtha)
+    for layer in hidden_layers[1:]:
+        encoder = tf.keras.layers.Dense(
+            layer,
+            activation='relu',
+            activity_regularizer=regularizer)(encoder)
+    encoder = tf.keras.layers.Dense(latent_dims, activation='relu')(encoder)
+    encoder = tf.keras.Model(inputs=encoder_input, outputs=encoder)
+
+    # decoder
+    decoder_input = tf.keras.Input(shape=(latent_dims,))
+    decoder = tf.keras.layers.Dense(
+        hidden_layers[-1],
+        activation='relu')(decoder_input)
+    for layer in reversed(hidden_layers[:-1]):
+        decoder = tf.keras.layers.Dense(
+            layer,
+            activation='relu',
+            activity_regularizer=regularizer)(decoder)
+    decoder = tf.keras.layers.Dense(
+        input_dims,
+        activation='sigmoid')(decoder)
+    decoder = tf.keras.Model(inputs=decoder_input, outputs=decoder)
+
+    # autoencoder
+    encoder_output = encoder(encoder_input)
+    decoder_output = decoder(encoder_output)
+    auto = tf.keras.Model(inputs=encoder_input, outputs=decoder_output)
+
+    auto.compile(optimizer='adam', loss='binary_crossentropy')
+
+    return encoder, decoder, auto
