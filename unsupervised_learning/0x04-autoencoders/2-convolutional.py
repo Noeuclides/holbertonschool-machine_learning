@@ -2,7 +2,6 @@
 """
 Convolutional autoencoder module
 """
-import numpy as np
 import tensorflow.keras as keras
 
 
