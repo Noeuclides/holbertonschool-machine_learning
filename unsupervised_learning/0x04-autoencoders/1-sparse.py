@@ -24,9 +24,11 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
     """
     # encoder
     encoder_input = keras.Input(shape=(input_dims,))
-    encoder = keras.layers.Dense(
-        hidden_layers[0], activation='relu')(encoder_input)
     regularizer = keras.regularizers.l1(lambtha)
+    encoder = keras.layers.Dense(
+        hidden_layers[0],
+        activation='relu',
+        activity_regularizer=regularizer)(encoder_input)
     for layer in hidden_layers[1:]:
         encoder = keras.layers.Dense(
             layer,
@@ -38,13 +40,10 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
     # decoder
     decoder_input = keras.Input(shape=(latent_dims,))
     decoder = keras.layers.Dense(
-        hidden_layers[-1],
-        activation='relu')(decoder_input)
+        hidden_layers[-1], activation='relu')(decoder_input)
     for layer in reversed(hidden_layers[:-1]):
         decoder = keras.layers.Dense(
-            layer,
-            activation='relu',
-            activity_regularizer=regularizer)(decoder)
+            layer, activation='relu')(decoder)
     decoder = keras.layers.Dense(
         input_dims,
         activation='sigmoid')(decoder)
