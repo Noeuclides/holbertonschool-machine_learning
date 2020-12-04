@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+rnn module
 """
 import numpy as np
 
