@@ -2,8 +2,7 @@
 """
 Sparse autoencoder module
 """
-import numpy as np
-import tensorflow as tf
+import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
@@ -23,4 +22,36 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
         - decoder: decoder model
         auto is the sparse autoencoder model
     """
-    pass
+    # encoder
+    encoder_input = keras.Input(shape=(input_dims,))
+    encoder = keras.layers.Dense(
+        hidden_layers[0], activation='relu')(encoder_input)
+    for layer in hidden_layers[1:]:
+        encoder = keras.layers.Dense(
+            layer, activation='relu')(encoder)
+    l1_reg = keras.regularizers.l1(lambtha)
+    encoder = keras.layers.Dense(
+        latent_dims,
+        activation='relu',
+        activity_regularizer=l1_reg)(encoder)
+    encoder = keras.Model(inputs=encoder_input, outputs=encoder)
+
+    # decoder
+    decoder_input = keras.Input(shape=(latent_dims,))
+    decoder = keras.layers.Dense(
+        hidden_layers[-1], activation='relu')(decoder_input)
+    for layer in reversed(hidden_layers[:-1]):
+        decoder = keras.layers.Dense(
+            layer, activation='relu')(decoder)
+    decoder = keras.layers.Dense(
+        input_dims, activation='sigmoid')(decoder)
+    decoder = keras.Model(inputs=decoder_input, outputs=decoder)
+
+    # autoencoder
+    encoder_output = encoder(encoder_input)
+    decoder_output = decoder(encoder_output)
+    auto = keras.Model(inputs=encoder_input, outputs=decoder_output)
+
+    auto.compile(optimizer='adam', loss='binary_crossentropy')
+
+    return encoder, decoder, auto
