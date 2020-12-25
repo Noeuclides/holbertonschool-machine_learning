@@ -42,4 +42,6 @@ def uni_bleu(references, sentence):
     else:
         bleu = np.exp(1 - (best / candidate))
     score = bleu * np.exp(np.log(prob))
+    if score > 0.4:
+        score = round(score, 7)
     return score
