@@ -24,7 +24,7 @@ soupsieve = "==2.0.1"
 toml = "==0.10.1"
 webencodings = "==0.5.1"
 Cycler = "==0.10.0"
-Pillow = "==8.0.1"
+Pillow = "==9.3.0"
 
 [dev-packages]
 
